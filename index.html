@@ -535,8 +535,8 @@
         <h1>Création de Carte Mégane-Carde</h1>
         <button class="menu-btn" id="menu-toggle-btn">&#9776;</button>
         <div id="menu">
+            <button id="show-home">Accueil</button>
             <button id="show-gallery">Bibliothèque</button>
-            <button id="show-form">Nouvelle Carte</button>
             <button id="theme-toggle">Thème</button>
         </div>
 
@@ -813,14 +813,14 @@
             menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
         });
 
-        document.getElementById('show-gallery').addEventListener('click', () => {
-            showGallery();
+        document.getElementById('show-home').addEventListener('click', () => {
+            clearForm();
+            showForm();
             menu.style.display = 'none';
         });
 
-        document.getElementById('show-form').addEventListener('click', () => {
-            clearForm();
-            showForm();
+        document.getElementById('show-gallery').addEventListener('click', () => {
+            showGallery();
             menu.style.display = 'none';
         });
         
