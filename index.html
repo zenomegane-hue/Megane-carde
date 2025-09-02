@@ -161,7 +161,7 @@
             padding: 20px;
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
             width: 85.60mm;
-            height: 53.98mm;
+            height: 63.98mm; /* AUGMENTÉ DE 10MM */
             position: relative;
             box-sizing: border-box;
             display: flex;
@@ -372,6 +372,10 @@
             position: relative;
             transform: scale(1.1);
             transition: transform 0.3s ease-out;
+            width: 85.60mm; /* Largeur de la carte */
+            height: 63.98mm; /* AUGMENTÉ DE 10MM */
+            box-sizing: border-box; /* Assure que le padding est inclus dans la taille */
+            overflow: hidden;
         }
         
         .modal.show .modal-content {
@@ -896,9 +900,9 @@
                 const imgData = canvas.toDataURL('image/png');
                 const { jsPDF } = window.jspdf;
                 const pdf = new jsPDF({
-                    orientation: 'landscape', unit: 'mm', format: [85.60, 53.98]
+                    orientation: 'landscape', unit: 'mm', format: [85.60, 63.98] /* HAUTEUR MISE À JOUR ICI */
                 });
-                pdf.addImage(imgData, 'PNG', 0, 0, 85.60, 53.98);
+                pdf.addImage(imgData, 'PNG', 0, 0, 85.60, 63.98); /* HAUTEUR MISE À JOUR ICI */
                 pdf.save('carte-megane.pdf');
             }
         }
