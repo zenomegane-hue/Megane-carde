@@ -185,7 +185,7 @@
         #carte-header h2 {
             margin: 0;
             color: #0056b3;
-            font-size: 0.8em; /* Réduction de la taille de police */
+            font-size: 0.9em; /* Augmentation de la taille de police */
             text-transform: uppercase;
             letter-spacing: 1px;
             font-weight: 700;
@@ -202,8 +202,8 @@
         #carte-info {
             flex-grow: 1;
             padding-right: 5px; /* Réduction du padding */
-            font-size: 0.4em; /* Réduction de la taille de police */
-            line-height: 1; /* Réduction de l'interligne */
+            font-size: 0.5em; /* Augmentation de la taille de police */
+            line-height: 1.1; /* Ajustement de l'interligne */
             transition: color 0.5s ease;
         }
         
@@ -216,7 +216,7 @@
 
         #carte-info strong {
             display: inline-block;
-            width: 45px; /* Ajustement de la largeur pour l'alignement */
+            width: 48px; /* Ajustement de la largeur pour l'alignement */
             color: #004d80;
             font-weight: 600;
             transition: color 0.5s ease;
@@ -228,23 +228,23 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            width: 50px; /* Réduction de la largeur du conteneur photo */
+            width: 58px; /* Augmentation de la largeur du conteneur photo */
         }
 
         #carte-photo {
-            width: 45px; /* Réduction de la taille de la photo */
-            height: 60px; /* Réduction de la taille de la photo */
-            border: 2px solid #0056b3;
+            width: 55px; /* Augmentation de la taille de la photo */
+            height: 70px; /* Augmentation de la taille de la photo */
+            border: 2px solid #0056b3; /* Epaisseur du cadre */
             border-radius: 4px;
             object-fit: cover;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
         }
         
         #carte-fonction {
-            font-size: 0.45em; /* Réduction de la taille de police */
+            font-size: 0.55em; /* Augmentation de la taille de police */
             color: #004d80;
             font-weight: bold;
-            margin-top: 2px; /* Réduction de la marge */
+            margin-top: 3px; /* Réduction de la marge */
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -255,8 +255,8 @@
             background-color: #007bff;
             color: #fff;
             text-align: center;
-            padding: 2px 0; /* Ajustement du padding */
-            font-size: 0.5em; /* Réduction de la taille de police */
+            padding: 3px 0; /* Ajustement du padding */
+            font-size: 0.6em; /* Augmentation de la taille de police */
             font-weight: bold;
             border-radius: 0 0 10px 10px; /* Bords arrondis seulement en bas */
             margin: 5px -8px -5px -8px; /* Annule le padding horizontal de la carte */
@@ -743,6 +743,9 @@
                     alert("La taille du fichier ne doit pas dépasser 2 Mo.");
                     return false;
                 }
+            } else {
+                alert("Veuillez télécharger une photo.");
+                return false;
             }
 
             return true;
@@ -821,6 +824,8 @@
             cartePreview.style.display = 'none';
             downloadButtons.style.display = 'none';
             document.getElementById('preview-main-btn').style.display = 'none';
+            // Optionnel: réinitialiser la source de la photo à vide
+            document.getElementById('carte-photo').src = ""; 
         }
 
         function showPreview(card = null) {
@@ -832,10 +837,10 @@
                 cardElement.className = 'modal-content';
                 cardElement.innerHTML = `
                     <div style="text-align: center; border-bottom: 1px solid rgba(0, 86, 179, 0.2); padding-bottom: 2px; margin-bottom: 3px;">
-                        <h2 style="margin: 0; color: #0056b3; font-size: 0.8em; text-transform: uppercase; letter-spacing: 1px; font-weight: 700;">${card.carteNom || 'Mégane-Carde'}</h2>
+                        <h2 style="margin: 0; color: #0056b3; font-size: 0.9em; text-transform: uppercase; letter-spacing: 1px; font-weight: 700;">${card.carteNom || 'Mégane-Carde'}</h2>
                     </div>
                     <div style="display: flex; align-items: flex-start; justify-content: space-between; flex-grow: 1;">
-                        <div style="flex-grow: 1; padding-right: 5px; font-size: 0.4em; line-height: 1;">
+                        <div style="flex-grow: 1; padding-right: 5px; font-size: 0.5em; line-height: 1.1;">
                             <p style="margin: 0;"><strong>Nom :</strong> ${card.nom}</p>
                             <p style="margin: 0;"><strong>Prénom :</strong> ${card.prenom}</p>
                             <p style="margin: 0;"><strong>Né(e) le :</strong> ${card.dateNaissance}</p>
@@ -846,12 +851,12 @@
                             <p style="margin: 0;"><strong>Tél. :</strong> ${card.numeroTelephone}</p>
                             <p style="margin: 0;"><strong>Email :</strong> ${card.email}</p>
                         </div>
-                        <div style="flex-shrink: 0; text-align: center; display: flex; flex-direction: column; align-items: center; width: 50px;">
-                            <img src="${card.photo}" style="width: 45px; height: 60px; border: 2px solid #0056b3; border-radius: 4px; object-fit: cover; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);">
-                            <p style="font-size: 0.45em; color: #004d80; font-weight: bold; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%;">${card.fonction}</p>
+                        <div style="flex-shrink: 0; text-align: center; display: flex; flex-direction: column; align-items: center; width: 58px;">
+                            <img src="${card.photo}" style="width: 55px; height: 70px; border: 2px solid #0056b3; border-radius: 4px; object-fit: cover; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);">
+                            <p style="font-size: 0.55em; color: #004d80; font-weight: bold; margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%;">${card.fonction}</p>
                         </div>
                     </div>
-                    <div style="background-color: #007bff; color: #fff; text-align: center; padding: 2px 0; font-size: 0.5em; font-weight: bold; border-radius: 0 0 10px 10px; margin: 5px -8px -5px -8px;">
+                    <div style="background-color: #007bff; color: #fff; text-align: center; padding: 3px 0; font-size: 0.6em; font-weight: bold; border-radius: 0 0 10px 10px; margin: 5px -8px -5px -8px;">
                         <span>MA CARTE COMMUNAUTAIRE</span>
                     </div>
                 `;
