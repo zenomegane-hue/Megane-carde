@@ -203,21 +203,21 @@
         #carte-info {
             flex-grow: 1;
             padding-right: 15px;
-            font-size: 0.6em; /* TAILLE DE POLICE RÉDUITE */
-            line-height: 1.2; /* INTERLIGNE RÉDUIT */
+            font-size: 0.6em; 
+            line-height: 1.2; 
             transition: color 0.5s ease;
         }
         
         #carte-info p {
             color: #333;
             text-align: left;
-            margin: 1px 0; /* MARGE RÉDUITE */
+            margin: 1px 0; 
             transition: color 0.5s ease;
         }
 
         #carte-info strong {
             display: inline-block;
-            width: 60px; /* LARGEUR RÉDUITE */
+            width: 60px; 
             color: #004d80;
             font-weight: 600;
             transition: color 0.5s ease;
@@ -598,12 +598,12 @@
                     <div id="carte-info">
                         <p><strong>Nom :</strong> <span id="display-nom"></span></p>
                         <p><strong>Prénom :</strong> <span id="display-prenom"></span></p>
-                        <p><strong>Date de Naissance :</strong> <span id="display-dateNaissance"></span></p>
-                        <p><strong>Lieu de Naissance :</strong> <span id="display-lieuNaissance"></span></p>
+                        <p><strong>Né(e) le :</strong> <span id="display-dateNaissance"></span></p>
+                        <p><strong>à :</strong> <span id="display-lieuNaissance"></span></p>
                         <p><strong>Ethnie :</strong> <span id="display-ethnie"></span></p>
                         <p><strong>Nationalité :</strong> <span id="display-nationalite"></span></p>
-                        <p><strong>Lieu d'Habitation :</strong> <span id="display-lieuHabitation"></span></p>
-                        <p><strong>Téléphone :</strong> <span id="display-numeroTelephone"></span></p>
+                        <p><strong>Résidence :</strong> <span id="display-lieuHabitation"></span></p>
+                        <p><strong>Tél. :</strong> <span id="display-numeroTelephone"></span></p>
                         <p><strong>Email :</strong> <span id="display-email"></span></p>
                     </div>
                     <img id="carte-photo" src="" alt="Photo d'identité">
@@ -780,12 +780,12 @@
                         <div style="flex-grow: 1; padding-right: 15px; font-size: 0.6em; line-height: 1.2;">
                             <p style="margin: 1px 0;"><strong>Nom :</strong> ${card.nom}</p>
                             <p style="margin: 1px 0;"><strong>Prénom :</strong> ${card.prenom}</p>
-                            <p style="margin: 1px 0;"><strong>Date de Naissance :</strong> ${card.dateNaissance}</p>
-                            <p style="margin: 1px 0;"><strong>Lieu de Naissance :</strong> ${card.lieuNaissance}</p>
+                            <p style="margin: 1px 0;"><strong>Né(e) le :</strong> ${card.dateNaissance}</p>
+                            <p style="margin: 1px 0;"><strong>à :</strong> ${card.lieuNaissance}</p>
                             <p style="margin: 1px 0;"><strong>Ethnie :</strong> ${card.ethnie || 'Non spécifié'}</p>
                             <p style="margin: 1px 0;"><strong>Nationalité :</strong> ${card.nationalite}</p>
-                            <p style="margin: 1px 0;"><strong>Lieu d'Habitation :</strong> ${card.lieuHabitation}</p>
-                            <p style="margin: 1px 0;"><strong>Téléphone :</strong> ${card.numeroTelephone}</p>
+                            <p style="margin: 1px 0;"><strong>Résidence :</strong> ${card.lieuHabitation}</p>
+                            <p style="margin: 1px 0;"><strong>Tél. :</strong> ${card.numeroTelephone}</p>
                             <p style="margin: 1px 0;"><strong>Email :</strong> ${card.email}</p>
                         </div>
                         <img src="${card.photo}" style="width: 60px; height: 80px; border: 2px solid #0056b3; border-radius: 6px; object-fit: cover; flex-shrink: 0;">
