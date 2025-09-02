@@ -158,7 +158,7 @@
             background: linear-gradient(135deg, #e0f7fa 0%, #bbdefb 100%);
             border: 2px solid #0056b3;
             border-radius: 12px;
-            padding: 5px 8px; /* Réduction du padding */
+            padding: 5px 8px;
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
             width: 85.60mm;
             height: 53.98mm; 
@@ -166,7 +166,7 @@
             box-sizing: border-box;
             display: flex;
             flex-direction: column;
-            justify-content: space-between; /* Pour pousser la barre du bas */
+            justify-content: space-between;
             overflow: hidden;
             transition: transform 0.3s ease-in-out, background 0.5s ease;
         }
@@ -178,14 +178,14 @@
         #carte-header {
             text-align: center;
             border-bottom: 1px solid rgba(0, 86, 179, 0.2);
-            padding-bottom: 2px; /* Réduction du padding */
-            margin-bottom: 3px; /* Réduction de la marge */
+            padding-bottom: 2px;
+            margin-bottom: 3px;
         }
 
         #carte-header h2 {
             margin: 0;
             color: #0056b3;
-            font-size: 0.9em; /* Augmentation de la taille de police */
+            font-size: 0.9em;
             text-transform: uppercase;
             letter-spacing: 1px;
             font-weight: 700;
@@ -201,22 +201,22 @@
 
         #carte-info {
             flex-grow: 1;
-            padding-right: 5px; /* Réduction du padding */
-            font-size: 0.5em; /* Augmentation de la taille de police */
-            line-height: 1.1; /* Ajustement de l'interligne */
+            padding-right: 5px;
+            font-size: 0.5em;
+            line-height: 1.1;
             transition: color 0.5s ease;
         }
         
         #carte-info p {
             color: #333;
             text-align: left;
-            margin: 0; /* Suppression des marges pour les paragraphes */
+            margin: 0;
             transition: color 0.5s ease;
         }
 
         #carte-info strong {
             display: inline-block;
-            width: 48px; /* Ajustement de la largeur pour l'alignement */
+            width: 48px;
             color: #004d80;
             font-weight: 600;
             transition: color 0.5s ease;
@@ -228,36 +228,35 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            width: 58px; /* Augmentation de la largeur du conteneur photo */
+            width: 58px;
         }
 
         #carte-photo {
-            width: 55px; /* Augmentation de la taille de la photo */
-            height: 70px; /* Augmentation de la taille de la photo */
-            border: 2px solid #0056b3; /* Epaisseur du cadre */
+            width: 55px;
+            height: 70px;
+            border: 2px solid #0056b3;
             border-radius: 4px;
             object-fit: cover;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
         }
         
         #carte-fonction {
-            font-size: 0.55em; /* Augmentation de la taille de police */
+            font-size: 0.55em;
             color: #004d80;
             font-weight: bold;
-            margin-top: 3px; /* Réduction de la marge */
+            margin-top: 3px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
             width: 100%;
         }
 
-        /* Nouveaux styles pour le QR code et le logo */
         #qr-and-logo-container {
             display: flex;
             justify-content: space-around;
             align-items: center;
             width: 100%;
-            height: 40px; /* Espace alloué pour les deux rectangles */
+            height: 40px;
             margin-top: 5px;
             margin-bottom: 5px;
         }
@@ -294,15 +293,14 @@
             background-color: #007bff;
             color: #fff;
             text-align: center;
-            padding: 3px 0; /* Ajustement du padding */
-            font-size: 0.6em; /* Augmentation de la taille de police */
+            padding: 3px 0;
+            font-size: 0.6em;
             font-weight: bold;
-            border-radius: 0 0 10px 10px; /* Bords arrondis seulement en bas */
-            margin: 5px -8px -5px -8px; /* Annule le padding horizontal de la carte */
+            border-radius: 0 0 10px 10px;
+            margin: 5px -8px -5px -8px;
             transition: background-color 0.5s ease, color 0.5s ease;
         }
 
-        /* Styles des boutons de téléchargement */
         .download-buttons {
             display: flex;
             justify-content: center;
@@ -353,7 +351,6 @@
             background-color: #512da8;
         }
 
-        /* Styles de la galerie des cartes enregistrées */
         #gallery {
             margin-top: 40px;
             border-top: 2px solid #e0e0e0;
@@ -438,7 +435,7 @@
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
             background: linear-gradient(135deg, #e0f7fa 0%, #bbdefb 100%);
             border-radius: 12px;
-            padding: 5px 8px; /* Même padding que la carte originale */
+            padding: 5px 8px;
             position: relative;
             transform: scale(1.1);
             transition: transform 0.3s ease-out;
@@ -495,7 +492,6 @@
             color: #fff;
         }
 
-        /* Nouveaux styles pour les flèches de navigation */
         .nav-btn {
             position: absolute;
             top: 50%;
@@ -788,8 +784,8 @@
     <div id="previewModal" class="modal">
         <span class="close-btn">&times;</span>
         <button id="prev-btn" class="nav-btn">&lt;</button>
-        <button id="next-btn" class="nav-btn">&gt;</button>
         <div id="modal-content-container"></div>
+        <button id="next-btn" class="nav-btn">&gt;</button>
     </div>
 
     <script>
@@ -904,7 +900,6 @@
             document.getElementById('display-email').textContent = data.email;
             document.getElementById('carte-fonction').textContent = data.fonction;
             
-            // Générer le QR code
             generateQRCode();
 
             cartePreview.style.display = 'flex';
@@ -978,24 +973,23 @@
                             <p><strong>Email :</strong> ${card.email}</p>
                         </div>
                         <div id="carte-photo-container">
-                            <img src="${card.photo}" alt="Photo d'identité" id="modal-photo">
-                            <p id="carte-fonction">${card.fonction}</p>
+                            <img src="${card.photo}" alt="Photo d'identité" id="modal-photo" style="width: 55px; height: 70px; border: 2px solid #0056b3; border-radius: 4px; object-fit: cover; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);">
+                            <p id="carte-fonction" style="font-size: 0.55em; color: #004d80; font-weight: bold; margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%;">${card.fonction}</p>
                         </div>
                     </div>
-                    <div id="qr-and-logo-container">
-                        <div id="qr-code-container">
-                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=40x40&data=https://zenomegane-hue.github.io/Megane-carde/" alt="QR Code" id="modal-qr">
+                    <div id="qr-and-logo-container" style="display: flex; justify-content: space-around; align-items: center; width: 100%; height: 40px; margin-top: 5px; margin-bottom: 5px;">
+                        <div id="qr-code-container" style="width: 40px; height: 40px; border: 1px solid #0056b3; display: flex; justify-content: center; align-items: center; border-radius: 4px; padding: 2px;">
+                             <img src="https://api.qrserver.com/v1/create-qr-code/?size=40x40&data=https://zenomegane-hue.github.io/Megane-carde/" alt="QR Code" id="modal-qr" style="max-width: 100%; max-height: 100%; object-fit: contain;">
                         </div>
-                        <div id="logo-container">
-                            <img src="${card.logo}" alt="Logo" id="modal-logo">
+                        <div id="logo-container" style="width: 40px; height: 40px; border: 1px solid #0056b3; display: flex; justify-content: center; align-items: center; border-radius: 4px; padding: 2px;">
+                            <img src="${card.logo}" alt="Logo" id="modal-logo" style="max-width: 100%; max-height: 100%; object-fit: contain;">
                         </div>
                     </div>
-                    <div id="carte-footer">
+                    <div id="carte-footer" style="background-color: #007bff; color: #fff; text-align: center; padding: 3px 0; font-size: 0.6em; font-weight: bold; border-radius: 0 0 10px 10px; margin: 5px -8px -5px -8px;">
                         <span>MA CARTE COMMUNAUTAIRE</span>
                     </div>
                 </div>
             `;
-            // Mettre à jour l'image du QR code et le logo
             const qrImage = modalContentContainer.querySelector('#modal-qr');
             const logoImage = modalContentContainer.querySelector('#modal-logo');
             if (document.body.classList.contains('dark-theme')) {
@@ -1015,11 +1009,17 @@
         }
 
         function updateNavButtons() {
-            prevBtn.disabled = currentCardIndex === 0;
-            nextBtn.disabled = currentCardIndex === cardData.length - 1;
+            if (cardData.length > 1) {
+                prevBtn.style.display = 'block';
+                nextBtn.style.display = 'block';
+                prevBtn.disabled = currentCardIndex === 0;
+                nextBtn.disabled = currentCardIndex === cardData.length - 1;
+            } else {
+                prevBtn.style.display = 'none';
+                nextBtn.style.display = 'none';
+            }
         }
 
-        // Génération du QR Code
         function generateQRCode() {
             const qrCodeDiv = document.getElementById('qr-code');
             qrCodeDiv.innerHTML = "";
@@ -1033,7 +1033,6 @@
             });
         }
         
-        // Événements pour la modale
         document.querySelector('.close-btn').addEventListener('click', () => {
             previewModal.style.display = 'none';
         });
@@ -1043,7 +1042,6 @@
             }
         });
 
-        // Gestion du menu
         document.getElementById('menu-toggle-btn').addEventListener('click', function() {
             menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
         });
@@ -1065,7 +1063,6 @@
             localStorage.setItem('theme', currentTheme);
         });
 
-        // Navigation dans la modale
         prevBtn.addEventListener('click', () => {
             if (currentCardIndex > 0) {
                 currentCardIndex--;
@@ -1082,7 +1079,6 @@
             }
         });
 
-        // Soumission du formulaire
         document.getElementById('form-carte').addEventListener('submit', function(event) {
             event.preventDefault();
 
@@ -1106,7 +1102,6 @@
                 return;
             }
 
-            // Normalisation des données
             formData.nom = formData.nom.charAt(0).toUpperCase() + formData.nom.slice(1).toLowerCase();
             formData.prenom = formData.prenom.charAt(0).toUpperCase() + formData.prenom.slice(1).toLowerCase();
             formData.lieuNaissance = formData.lieuNaissance.charAt(0).toUpperCase() + formData.lieuNaissance.slice(1).toLowerCase();
@@ -1117,7 +1112,6 @@
                 const photoDataUrl = e.target.result;
                 document.getElementById('carte-photo').src = photoDataUrl;
                 
-                // Mettre à jour l'affichage de la carte
                 document.getElementById('display-carte-nom').textContent = formData.carteNom || 'Mégane-Carde';
                 document.getElementById('display-nom').textContent = formData.nom;
                 document.getElementById('display-prenom').textContent = formData.prenom;
@@ -1130,7 +1124,6 @@
                 document.getElementById('display-email').textContent = formData.email;
                 document.getElementById('carte-fonction').textContent = formData.fonction;
 
-                // Gérer le logo
                 if (formData.logoFile) {
                     const readerLogo = new FileReader();
                     readerLogo.onload = function(e) {
@@ -1142,7 +1135,6 @@
                     document.getElementById('logo-img').src = "";
                 }
 
-                // Générer le QR code et afficher la carte
                 generateQRCode();
                 cartePreview.style.display = 'flex';
                 downloadButtons.style.display = 'flex';
@@ -1151,8 +1143,6 @@
             readerPhoto.readAsDataURL(formData.photoFile);
         });
 
-
-        // Téléchargement et enregistrement
         async function captureAndDownload(format) {
             downloadButtons.style.display = 'none';
             document.getElementById('preview-main-btn').style.display = 'none';
@@ -1213,7 +1203,6 @@
             }
         });
 
-        // Événements des boutons
         document.getElementById('download-png').addEventListener('click', () => captureAndDownload('png'));
         document.getElementById('download-pdf').addEventListener('click', () => captureAndDownload('pdf'));
         document.getElementById('preview-main-btn').addEventListener('click', () => {
