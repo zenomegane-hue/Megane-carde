@@ -7,8 +7,8 @@
     <style>
         /* CSS */
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Nouvelle police */
+            background-color: #e0f2f7; /* Couleur de fond plus douce */
             margin: 0;
             padding: 20px;
             display: flex;
@@ -18,19 +18,27 @@
         }
 
         .container {
-            background-color: #fff;
+            background-color: #ffffff;
             padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border-radius: 12px; /* Bords plus arrondis */
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15); /* Ombre plus prononcée */
             width: 100%;
-            max-width: 600px;
+            max-width: 650px; /* Largeur légèrement augmentée */
             position: relative;
+            animation: fadeIn 0.8s ease-out; /* Animation d'apparition */
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         h1 {
-            color: #333;
+            color: #2c3e50; /* Couleur de titre plus foncée */
             text-align: center;
             margin-bottom: 30px;
+            font-size: 2em; /* Taille de titre ajustée */
+            letter-spacing: 1px;
         }
 
         .form-group {
@@ -41,7 +49,7 @@
             display: block;
             margin-bottom: 8px;
             font-weight: bold;
-            color: #555;
+            color: #34495e; /* Couleur de label plus foncée */
         }
 
         input[type="text"],
@@ -51,14 +59,24 @@
         input[type="file"] {
             width: 100%;
             padding: 12px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
+            border: 1px solid #c0d9e6; /* Bordure plus douce */
+            border-radius: 8px; /* Bords légèrement plus arrondis */
             box-sizing: border-box;
             font-size: 16px;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Transition au focus */
+        }
+
+        input[type="text"]:focus,
+        input[type="date"]:focus,
+        input[type="tel"]:focus,
+        input[type="email"]:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+            outline: none;
         }
 
         input[type="file"] {
-            padding: 3px;
+            padding: 10px; /* Plus de padding pour le champ fichier */
         }
 
         .btn-submit {
@@ -67,15 +85,16 @@
             background-color: #007bff;
             color: #fff;
             border: none;
-            border-radius: 6px;
+            border-radius: 8px; /* Bords plus arrondis */
             font-size: 18px;
             font-weight: bold;
             cursor: pointer;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.3s ease, transform 0.2s ease; /* Transition au survol */
         }
 
         .btn-submit:hover {
             background-color: #0056b3;
+            transform: translateY(-2px); /* Effet léger au survol */
         }
 
         /* Menu de paramètres */
@@ -85,68 +104,83 @@
             right: 20px;
             background: none;
             border: none;
-            font-size: 24px;
+            font-size: 28px; /* Taille augmentée */
             cursor: pointer;
             color: #555;
+            transition: color 0.3s ease;
+        }
+        .menu-btn:hover {
+            color: #007bff;
         }
 
         #menu {
             display: none;
             position: absolute;
-            top: 55px;
+            top: 60px; /* Position ajustée */
             right: 20px;
             background-color: #fff;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e0e0e0; /* Bordure plus douce */
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             z-index: 10;
+            min-width: 150px; /* Largeur minimale */
         }
 
         #menu button {
             display: block;
             width: 100%;
-            padding: 10px 20px;
+            padding: 12px 20px; /* Padding ajusté */
             border: none;
             background-color: transparent;
             text-align: left;
             cursor: pointer;
             font-size: 16px;
+            color: #333;
+            transition: background-color 0.2s ease, color 0.2s ease;
         }
 
         #menu button:hover {
-            background-color: #f4f4f4;
+            background-color: #f0f0f0;
+            color: #007bff;
         }
 
-        /* Styles pour la carte d'identité spécifique */
+        /* Styles pour la carte d'identité SPÉCIFIQUE */
         #carte-preview {
-            margin-top: 30px;
-            border: 2px solid #007bff;
-            border-radius: 8px;
-            padding: 15px;
-            background-color: #fdfdfd;
-            display: none;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            width: 85.60mm;
-            height: 53.98mm;
-            overflow: hidden;
+            margin-top: 40px; /* Marge supérieure augmentée */
+            background: linear-gradient(135deg, #e0f7fa 0%, #bbdefb 100%); /* Dégradé de fond */
+            border: 2px solid #0056b3; /* Bordure plus foncée */
+            border-radius: 12px; /* Bords plus arrondis */
+            padding: 20px; /* Plus de padding */
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15); /* Ombre améliorée */
+            width: 85.60mm; /* Taille standard carte de crédit */
+            height: 53.98mm; /* Taille standard carte de crédit */
             position: relative;
             box-sizing: border-box;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            overflow: hidden; /* Assurez-vous que rien ne dépasse */
+            transition: transform 0.3s ease-in-out;
+        }
+
+        #carte-preview:hover {
+            transform: translateY(-5px) scale(1.02); /* Petit effet 3D au survol */
         }
 
         #carte-header {
             text-align: center;
+            border-bottom: 1px solid rgba(0, 86, 179, 0.2); /* Ligne de séparation douce */
+            padding-bottom: 8px;
+            margin-bottom: 10px;
         }
 
         #carte-header h2 {
-            margin: 0 0 5px 0;
-            color: #007bff;
-            font-size: 14px;
+            margin: 0;
+            color: #0056b3; /* Couleur de titre de carte */
+            font-size: 1.1em; /* Taille de titre de carte ajustée */
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
+            font-weight: 700;
         }
 
         #carte-content {
@@ -159,90 +193,56 @@
 
         #carte-info {
             flex-grow: 1;
-            padding-right: 10px;
+            padding-right: 15px; /* Marge à droite pour la photo */
+            font-size: 0.7em; /* Taille de police globale pour l'info */
+            line-height: 1.4; /* Espacement de ligne pour la lisibilité */
         }
         
         #carte-info p {
-            font-size: 9px;
             color: #333;
             text-align: left;
             margin: 2px 0;
-            line-height: 1.2;
         }
 
         #carte-info strong {
             display: inline-block;
-            width: 60px;
+            width: 70px; /* Largeur augmentée pour les labels */
+            color: #004d80; /* Couleur plus foncée pour les labels */
+            font-weight: 600;
         }
 
         #carte-photo {
-            width: 50px;
-            height: 65px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+            width: 60px; /* Taille de photo légèrement augmentée */
+            height: 80px; /* Hauteur ajustée */
+            border: 2px solid #0056b3; /* Bordure photo assortie */
+            border-radius: 6px;
             object-fit: cover;
             flex-shrink: 0;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Ombre légère sur la photo */
         }
 
-        /* Styles de la galerie des cartes enregistrées */
-        #gallery {
-            margin-top: 40px;
-            border-top: 2px solid #ccc;
-            padding-top: 20px;
-            text-align: center;
-            display: none;
-        }
-        
-        #gallery h2 {
-            color: #333;
-            margin-bottom: 20px;
-        }
-
-        #gallery-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            justify-content: center;
-        }
-
-        .saved-card {
-            border: 2px solid #007bff;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            padding: 10px;
-            width: 150px;
-            text-align: left;
-            position: relative;
-            cursor: pointer;
-        }
-
-        .saved-card img {
-            width: 50px;
-            height: 65px;
-            border-radius: 4px;
-            float: right;
-        }
-
-        .saved-card p {
-            font-size: 10px;
-            margin: 2px 0;
-            line-height: 1.2;
-        }
-
+        /* Styles des boutons de téléchargement */
         .download-buttons {
             display: flex;
-            justify-content: space-around;
-            margin-top: 25px;
+            justify-content: center; /* Centrer les boutons */
+            gap: 15px; /* Espacement entre les boutons */
+            margin-top: 30px;
             width: 100%;
         }
 
         .download-btn {
-            padding: 8px 15px;
+            padding: 10px 20px;
             border: none;
-            border-radius: 5px;
-            font-size: 14px;
+            border-radius: 6px;
+            font-size: 15px;
             cursor: pointer;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            font-weight: 600;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .download-btn:hover {
+            transform: translateY(-2px);
         }
 
         .download-btn.png {
@@ -264,56 +264,94 @@
         }
 
         .btn-save-card {
-            background-color: #3f51b5;
+            background-color: #673ab7; /* Couleur plus douce pour "Enregistrer" */
             color: #fff;
         }
         .btn-save-card:hover {
-            background-color: #303f9f;
+            background-color: #512da8;
+        }
+
+        /* Styles de la galerie des cartes enregistrées */
+        #gallery {
+            margin-top: 40px;
+            border-top: 2px solid #e0e0e0;
+            padding-top: 30px;
+            text-align: center;
+            display: none;
+        }
+        
+        #gallery h2 {
+            color: #2c3e50;
+            margin-bottom: 25px;
+            font-size: 1.8em;
+        }
+
+        #gallery-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px; /* Espacement ajusté */
+            justify-content: center;
+        }
+
+        .saved-card {
+            background: linear-gradient(135deg, #f0f8ff 0%, #e0e7ee 100%); /* Dégradé léger */
+            border: 1px solid #a7d9ed; /* Bordure plus douce */
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08); /* Ombre plus douce */
+            padding: 12px;
+            width: 160px; /* Largeur ajustée */
+            text-align: left;
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .saved-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.12);
+        }
+
+        .saved-card img {
+            width: 55px; /* Taille photo ajustée */
+            height: 70px;
+            border-radius: 5px;
+            float: right;
+            margin-left: 10px; /* Marge pour ne pas coller au texte */
+            border: 1px solid #b3d4f4;
+        }
+
+        .saved-card p {
+            font-size: 0.75em; /* Taille de police ajustée */
+            margin: 2px 0;
+            line-height: 1.3;
+            color: #444;
+        }
+
+        .saved-card .preview-btn {
+            top: 8px; /* Position ajustée */
+            right: 8px;
+            font-size: 16px;
         }
 
         /* Styles de la modale d'aperçu */
         .modal {
-            display: none;
-            position: fixed;
-            z-index: 100;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(5px);
-            justify-content: center;
-            align-items: center;
+            background-color: rgba(0, 0, 0, 0.6); /* Fond plus sombre pour le flou */
+            backdrop-filter: blur(8px); /* Flou plus prononcé */
         }
 
         .modal-content {
-            position: relative;
-            background-color: #fefefe;
-            margin: auto;
-            padding: 0;
-            width: 85.60mm;
-            height: 53.98mm;
-            border-radius: 8px;
-            border: 2px solid #007bff;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            border: 3px solid #0056b3; /* Bordure plus épaisse */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); /* Ombre plus prononcée */
+            background: linear-gradient(135deg, #e0f7fa 0%, #bbdefb 100%); /* Dégradé de fond */
         }
 
         .close-btn {
-            position: absolute;
-            top: 5px;
-            right: 15px;
-            color: #aaa;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
+            color: #fff; /* Couleur blanche pour le bouton de fermeture */
+            text-shadow: 0 0 5px rgba(0,0,0,0.5); /* Ombre pour le rendre visible */
         }
-
         .close-btn:hover,
         .close-btn:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
+            color: #ff6b6b; /* Couleur rouge au survol */
         }
 
         .preview-btn {
@@ -322,10 +360,23 @@
             right: 5px;
             font-size: 18px;
             cursor: pointer;
-            background: none;
+            background: rgba(255, 255, 255, 0.7); /* Fond semi-transparent */
             border: none;
             color: #555;
+            border-radius: 50%; /* Bouton rond */
+            width: 30px;
+            height: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+            transition: background-color 0.2s ease, color 0.2s ease;
         }
+        .preview-btn:hover {
+            background-color: #007bff;
+            color: #fff;
+        }
+
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -436,228 +487,15 @@
         const modalContentContainer = document.getElementById('modal-content-container');
         const menu = document.getElementById('menu');
 
-        function updateFormWithCardData(data) {
-            document.getElementById('nom').value = data.nom;
-            document.getElementById('prenom').value = data.prenom;
-            document.getElementById('dateNaissance').value = data.dateNaissance;
-            document.getElementById('lieuNaissance').value = data.lieuNaissance;
-            document.getElementById('ethnie').value = data.ethnie;
-            document.getElementById('nationalite').value = data.nationalite;
-            document.getElementById('lieuHabitation').value = data.lieuHabitation;
-            document.getElementById('numeroTelephone').value = data.numeroTelephone;
-            document.getElementById('email').value = data.email;
-            document.getElementById('carte-photo').src = data.photo;
-
-            document.getElementById('display-nom').textContent = data.nom;
-            document.getElementById('display-prenom').textContent = data.prenom;
-            document.getElementById('display-dateNaissance').textContent = data.dateNaissance;
-            document.getElementById('display-lieuNaissance').textContent = data.lieuNaissance;
-            document.getElementById('display-ethnie').textContent = data.ethnie || 'Non spécifié';
-            document.getElementById('display-nationalite').textContent = data.nationalite;
-            document.getElementById('display-lieuHabitation').textContent = data.lieuHabitation;
-            document.getElementById('display-numeroTelephone').textContent = data.numeroTelephone;
-            document.getElementById('display-email').textContent = data.email;
-
-            cartePreview.style.display = 'flex';
-            downloadButtons.style.display = 'flex';
-            document.getElementById('preview-main-btn').style.display = 'block';
-        }
-
-        function renderGallery() {
-            const galleryContainer = document.getElementById('gallery-container');
-            galleryContainer.innerHTML = '';
-
-            cardData.forEach((card, index) => {
-                const newCard = document.createElement('div');
-                newCard.className = 'saved-card';
-                newCard.innerHTML = `
-                    <img src="${card.photo}" alt="Carte Enregistrée">
-                    <p><strong>Nom :</strong> ${card.nom}</p>
-                    <p><strong>Prénom :</strong> ${card.prenom}</p>
-                    <button class="preview-btn gallery-preview-btn">👁️</button>
-                `;
-                newCard.addEventListener('click', (e) => {
-                    if (!e.target.classList.contains('gallery-preview-btn')) {
-                        updateFormWithCardData(card);
-                        showForm();
-                    }
-                });
-                newCard.querySelector('.gallery-preview-btn').addEventListener('click', () => {
-                    showPreview(card);
-                });
-                galleryContainer.appendChild(newCard);
-            });
-        }
-
-        function showGallery() {
-            formContent.style.display = 'none';
-            galleryContent.style.display = 'block';
-            renderGallery();
-        }
-
-        function showForm() {
-            formContent.style.display = 'block';
-            galleryContent.style.display = 'none';
-        }
-
-        function clearForm() {
-            document.getElementById('form-carte').reset();
-            cartePreview.style.display = 'none';
-            downloadButtons.style.display = 'none';
-            document.getElementById('preview-main-btn').style.display = 'none';
-        }
-
-        function showPreview(card = null) {
-            modalContentContainer.innerHTML = '';
-            
-            let cardElement;
-            if (card) {
-                cardElement = document.createElement('div');
-                cardElement.id = 'carte-preview-modal';
-                cardElement.style.width = '85.60mm';
-                cardElement.style.height = '53.98mm';
-                cardElement.style.padding = '15px';
-                cardElement.style.border = '2px solid #007bff';
-                cardElement.style.borderRadius = '8px';
-                cardElement.style.backgroundColor = '#fdfdfd';
-                cardElement.innerHTML = `
-                    <div style="text-align: center;">
-                        <h2 style="margin: 0 0 5px 0; color: #007bff; font-size: 14px; text-transform: uppercase;">Mégane-Carde</h2>
-                    </div>
-                    <div style="display: flex; align-items: flex-start; justify-content: space-between; flex-grow: 1; padding-top: 5px;">
-                        <div style="flex-grow: 1; padding-right: 10px;">
-                            <p style="font-size: 9px; margin: 2px 0;"><strong>Nom :</strong> ${card.nom}</p>
-                            <p style="font-size: 9px; margin: 2px 0;"><strong>Prénom :</strong> ${card.prenom}</p>
-                            <p style="font-size: 9px; margin: 2px 0;"><strong>Date de Naissance :</strong> ${card.dateNaissance}</p>
-                            <p style="font-size: 9px; margin: 2px 0;"><strong>Lieu de Naissance :</strong> ${card.lieuNaissance}</p>
-                            <p style="font-size: 9px; margin: 2px 0;"><strong>Ethnie :</strong> ${card.ethnie || 'Non spécifié'}</p>
-                            <p style="font-size: 9px; margin: 2px 0;"><strong>Nationalité :</strong> ${card.nationalite}</p>
-                            <p style="font-size: 9px; margin: 2px 0;"><strong>Lieu d'Habitation :</strong> ${card.lieuHabitation}</p>
-                            <p style="font-size: 9px; margin: 2px 0;"><strong>Téléphone :</strong> ${card.numeroTelephone}</p>
-                            <p style="font-size: 9px; margin: 2px 0;"><strong>Email :</strong> ${card.email}</p>
-                        </div>
-                        <img src="${card.photo}" style="width: 50px; height: 65px; border: 1px solid #ddd; border-radius: 4px; object-fit: cover; flex-shrink: 0;">
-                    </div>
-                `;
-            } else {
-                cardElement = cartePreview.cloneNode(true);
-                cardElement.style.display = 'flex';
-                cardElement.style.boxShadow = 'none';
-                cardElement.querySelector('.preview-btn').style.display = 'none';
+        // Fonction de validation du formulaire
+        function validateForm(formData) {
+            // Règle 1: Nom et Prénom
+            const nomRegex = /^[a-zA-ZÀ-ÿ\s'-]{2,50}$/;
+            const prenomRegex = /^[a-zA-ZÀ-ÿ\s'-]{2,50}$/;
+            if (!nomRegex.test(formData.nom) || !prenomRegex.test(formData.prenom)) {
+                alert("Le nom et le prénom doivent contenir entre 2 et 50 lettres (accents et espaces autorisés).");
+                return false;
             }
 
-            modalContentContainer.appendChild(cardElement);
-            previewModal.style.display = 'flex';
-        }
-
-        // Événements pour la modale
-        document.querySelector('.close-btn').addEventListener('click', () => {
-            previewModal.style.display = 'none';
-        });
-        window.addEventListener('click', (event) => {
-            if (event.target === previewModal) {
-                previewModal.style.display = 'none';
-            }
-        });
-
-        // Gestion du menu
-        document.getElementById('menu-toggle-btn').addEventListener('click', function() {
-            menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
-        });
-
-        document.getElementById('show-gallery').addEventListener('click', () => {
-            showGallery();
-            menu.style.display = 'none';
-        });
-
-        document.getElementById('show-form').addEventListener('click', () => {
-            clearForm();
-            showForm();
-            menu.style.display = 'none';
-        });
-
-        // Soumission du formulaire
-        document.getElementById('form-carte').addEventListener('submit', function(event) {
-            event.preventDefault(); // Empêche le rechargement de la page
-
-            const nom = document.getElementById('nom').value;
-            const prenom = document.getElementById('prenom').value;
-            const dateNaissance = document.getElementById('dateNaissance').value;
-            const lieuNaissance = document.getElementById('lieuNaissance').value;
-            const ethnie = document.getElementById('ethnie').value;
-            const nationalite = document.getElementById('nationalite').value;
-            const lieuHabitation = document.getElementById('lieuHabitation').value;
-            const numeroTelephone = document.getElementById('numeroTelephone').value;
-            const email = document.getElementById('email').value;
-            const photoFile = document.getElementById('photo').files[0];
-
-            document.getElementById('display-nom').textContent = nom;
-            document.getElementById('display-prenom').textContent = prenom;
-            document.getElementById('display-dateNaissance').textContent = dateNaissance;
-            document.getElementById('display-lieuNaissance').textContent = lieuNaissance;
-            document.getElementById('display-ethnie').textContent = ethnie || 'Non spécifié';
-            document.getElementById('display-nationalite').textContent = nationalite;
-            document.getElementById('display-lieuHabitation').textContent = lieuHabitation;
-            document.getElementById('display-numeroTelephone').textContent = numeroTelephone;
-            document.getElementById('display-email').textContent = email;
-
-            if (photoFile) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById('carte-photo').src = e.target.result;
-                    cartePreview.style.display = 'flex';
-                    downloadButtons.style.display = 'flex';
-                    document.getElementById('preview-main-btn').style.display = 'block';
-                };
-                reader.readAsDataURL(photoFile);
-            }
-        });
-
-        // Téléchargement et enregistrement
-        async function captureAndDownload(format) {
-            downloadButtons.style.display = 'none';
-            document.getElementById('preview-main-btn').style.display = 'none';
-            await new Promise(resolve => setTimeout(resolve, 50));
-            const canvas = await html2canvas(cartePreview, {
-                scale: 4, useCORS: true, width: cartePreview.offsetWidth, height: cartePreview.offsetHeight
-            });
-            downloadButtons.style.display = 'flex';
-            document.getElementById('preview-main-btn').style.display = 'block';
-
-            if (format === 'png') {
-                const link = document.createElement('a');
-                link.href = canvas.toDataURL('image/png');
-                link.download = 'carte-megane.png';
-                link.click();
-            } else if (format === 'pdf') {
-                const imgData = canvas.toDataURL('image/png');
-                const { jsPDF } = window.jspdf;
-                const pdf = new jsPDF({
-                    orientation: 'landscape', unit: 'mm', format: [85.60, 53.98]
-                });
-                pdf.addImage(imgData, 'PNG', 0, 0, 85.60, 53.98);
-                pdf.save('carte-megane.pdf');
-            }
-        }
-        
-        document.getElementById('save-card').addEventListener('click', async function() {
-            const data = {
-                nom: document.getElementById('nom').value, prenom: document.getElementById('prenom').value, dateNaissance: document.getElementById('dateNaissance').value, lieuNaissance: document.getElementById('lieuNaissance').value, ethnie: document.getElementById('ethnie').value, nationalite: document.getElementById('nationalite').value, lieuHabitation: document.getElementById('lieuHabitation').value, numeroTelephone: document.getElementById('numeroTelephone').value, email: document.getElementById('email').value, photo: document.getElementById('carte-photo').src
-            };
-            const existingIndex = cardData.findIndex(card => card.nom === data.nom && card.prenom === data.prenom);
-            if (existingIndex !== -1) {
-                cardData[existingIndex] = data;
-            } else {
-                cardData.push(data);
-            }
-            localStorage.setItem('savedCards', JSON.stringify(cardData));
-            alert('Carte enregistrée avec succès !');
-        });
-
-        // Événements des boutons
-        document.getElementById('download-png').addEventListener('click', () => captureAndDownload('png'));
-        document.getElementById('download-pdf').addEventListener('click', () => captureAndDownload('pdf'));
-        document.getElementById('preview-main-btn').addEventListener('click', () => showPreview());
-    </script>
-</body>
-</html>
+            // Règle 2: Date de naissance
+            const
