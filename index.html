@@ -310,9 +310,18 @@
             object-fit: contain;
             flex-shrink: 0;
         }
-        
+
+        #qr-code {
+            order: 1;
+        }
+        .qr-description {
+            order: 2;
+        }
         #logo-img {
-            order: 2; /* S'assure que le logo est à droite */
+            order: 2; /* Pour que le logo soit à droite du slogan */
+        }
+        .slogan-text {
+            order: 1; /* Pour que le slogan soit à gauche du logo */
         }
 
         #carte-footer {
@@ -1017,12 +1026,12 @@
                     </div>
                     <div id="qr-and-logo-container" style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin: 5px 0; gap: 5px;">
                         <div class="qr-section" style="display: flex; align-items: center; gap: 5px; border: 1px solid #0056b3; padding: 2px 5px; border-radius: 4px; flex-grow: 1; height: 40px; box-sizing: border-box; justify-content: flex-start;">
-                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=35x35&data=https://zenomegane-hue.github.io/Megane-carde/" alt="QR Code" id="modal-qr" style="width: 35px; height: 35px; object-fit: contain; flex-shrink: 0;">
-                            <span class="qr-description" style="font-size: 0.5em; color: #333; text-align: left; flex-grow: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Scannez ce QR Code</span>
+                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=35x35&data=https://zenomegane-hue.github.io/Megane-carde/" alt="QR Code" id="modal-qr" style="width: 35px; height: 35px; object-fit: contain; flex-shrink: 0; order: 1;">
+                            <span class="qr-description" style="font-size: 0.5em; color: #333; text-align: left; flex-grow: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; order: 2;">Scannez ce QR Code</span>
                         </div>
                         <div class="logo-section" style="display: flex; align-items: center; gap: 5px; border: 1px solid #0056b3; padding: 2px 5px; border-radius: 4px; flex-grow: 1; height: 40px; box-sizing: border-box; justify-content: flex-end;">
-                            <span id="slogan-text-modal" class="slogan-text" style="font-size: 0.5em; color: #333; text-align: right; flex-grow: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${card.slogan}</span>
-                            <img src="${card.logo}" alt="Logo" id="modal-logo" style="width: 35px; height: 35px; object-fit: contain; flex-shrink: 0;">
+                            <span id="slogan-text-modal" class="slogan-text" style="font-size: 0.5em; color: #333; text-align: right; flex-grow: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; order: 1;">${card.slogan}</span>
+                            <img src="${card.logo}" alt="Logo" id="modal-logo" style="width: 35px; height: 35px; object-fit: contain; flex-shrink: 0; order: 2;">
                         </div>
                     </div>
                     <div id="carte-footer" style="background-color: #007bff; color: #fff; text-align: center; padding: 3px 0; font-size: 0.6em; font-weight: bold; border-radius: 0 0 10px 10px; margin: 5px -8px -5px -8px;">
@@ -1185,8 +1194,8 @@
                 }
 
                 generateQRCode();
-                cartePreview.style.display = 'flex';
-                downloadButtons.style.display = 'flex';
+                carte-preview.style.display = 'flex';
+                download-buttons.style.display = 'flex';
                 document.getElementById('preview-main-btn').style.display = 'block';
             };
             readerPhoto.readAsDataURL(formData.photoFile);
