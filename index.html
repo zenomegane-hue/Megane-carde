@@ -251,35 +251,50 @@
             width: 100%;
         }
 
-        /* NOUVEAUX STYLES POUR L'ÉLARGISSEMENT HORIZONTAL */
+        /* Nouveaux styles pour le QR code et le logo */
         #qr-and-logo-container {
             display: flex;
-            justify-content: space-between; /* Distribuer l'espace */
-            align-items: center;
-            width: calc(100% - 4px); /* Ajuster la largeur pour le padding horizontal */
-            height: 40px;
-            margin-top: 5px;
-            margin-bottom: 5px;
-            gap: 10px; /* Espace entre le QR code et le logo */
+            justify-content: space-between;
+            align-items: flex-end; /* Alignement en bas pour les descriptions */
+            width: 100%;
+            margin: 5px 0;
         }
-        
-        #qr-code-container, #logo-container {
+
+        .qr-section, .logo-section {
             display: flex;
-            justify-content: center;
             align-items: center;
+            gap: 5px;
+            border: 1px solid #0056b3;
             padding: 2px;
             border-radius: 4px;
+            flex-grow: 1;
+            min-width: 40px;
             height: 40px;
             box-sizing: border-box;
-            flex-grow: 1; /* Permet aux conteneurs de s'élargir */
-            border: 1px solid #0056b3; /* Garder la bordure */
-            min-width: 40px; /* S'assurer qu'ils ne rétrécissent pas trop */
+        }
+        
+        .qr-section {
+            justify-content: flex-start;
+        }
+
+        .logo-section {
+            justify-content: flex-end;
+        }
+
+        .qr-description, .slogan-text {
+            font-size: 0.4em;
+            color: #333;
+            text-align: left;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         
         #qr-code, #logo-img {
-            max-width: 100%;
-            max-height: 100%;
+            max-width: 40px;
+            max-height: 40px;
             object-fit: contain;
+            flex-shrink: 0;
         }
 
         #carte-footer {
@@ -591,12 +606,16 @@
             color: #e0e0e0;
         }
         
-        .dark-theme #qr-code-container, .dark-theme #logo-container {
+        .dark-theme .qr-section, .dark-theme .logo-section {
             border-color: #e0e0e0;
         }
         
         .dark-theme #qr-code, .dark-theme #logo-img {
             filter: invert(1) hue-rotate(180deg);
+        }
+
+        .dark-theme .qr-description, .dark-theme .slogan-text {
+            color: #e0e0e0;
         }
 
         .dark-theme #carte-photo {
@@ -715,6 +734,10 @@
                     <input type="text" id="fonction">
                 </div>
                 <div class="form-group">
+                    <label for="slogan">Slogan (optionnel) :</label>
+                    <input type="text" id="slogan">
+                </div>
+                <div class="form-group">
                     <label for="photo">Photo :</label>
                     <input type="file" id="photo" accept="image/*" required>
                 </div>
@@ -748,11 +771,13 @@
                     </div>
                 </div>
                 <div id="qr-and-logo-container">
-                    <div id="qr-code-container">
+                    <div class="qr-section">
                         <div id="qr-code"></div>
+                        <span class="qr-description">Scannez ce QR Code</span>
                     </div>
-                    <div id="logo-container">
+                    <div class="logo-section">
                         <img id="logo-img" src="" alt="Logo">
+                        <span id="slogan-text" class="slogan-text"></span>
                     </div>
                 </div>
                 <div id="carte-footer">
@@ -878,6 +903,7 @@
             document.getElementById('numeroTelephone').value = data.numeroTelephone;
             document.getElementById('email').value = data.email;
             document.getElementById('fonction').value = data.fonction;
+            document.getElementById('slogan').value = data.slogan;
             document.getElementById('carte-photo').src = data.photo;
             document.getElementById('logo-img').src = data.logo;
 
@@ -892,6 +918,7 @@
             document.getElementById('display-numeroTelephone').textContent = data.numeroTelephone;
             document.getElementById('display-email').textContent = data.email;
             document.getElementById('carte-fonction').textContent = data.fonction;
+            document.getElementById('slogan-text').textContent = data.slogan;
             
             generateQRCode();
 
@@ -970,12 +997,14 @@
                             <p id="carte-fonction" style="font-size: 0.55em; color: #004d80; font-weight: bold; margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%;">${card.fonction}</p>
                         </div>
                     </div>
-                    <div id="qr-and-logo-container" style="display: flex; justify-content: space-between; align-items: center; width: calc(100% - 4px); height: 40px; margin-top: 5px; margin-bottom: 5px; gap: 10px;">
-                        <div id="qr-code-container" style="width: 40px; height: 40px; border: 1px solid #0056b3; display: flex; justify-content: center; align-items: center; border-radius: 4px; padding: 2px; flex-grow: 1; min-width: 40px;">
-                             <img src="https://api.qrserver.com/v1/create-qr-code/?size=40x40&data=https://zenomegane-hue.github.io/Megane-carde/" alt="QR Code" id="modal-qr" style="max-width: 100%; max-height: 100%; object-fit: contain;">
+                    <div id="qr-and-logo-container" style="display: flex; justify-content: space-between; align-items: flex-end; width: 100%; margin: 5px 0;">
+                        <div class="qr-section" style="display: flex; align-items: center; gap: 5px; border: 1px solid #0056b3; padding: 2px; border-radius: 4px; flex-grow: 1; min-width: 40px; height: 40px; box-sizing: border-box; justify-content: flex-start;">
+                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=40x40&data=https://zenomegane-hue.github.io/Megane-carde/" alt="QR Code" id="modal-qr" style="max-width: 40px; max-height: 40px; object-fit: contain; flex-shrink: 0;">
+                            <span class="qr-description" style="font-size: 0.4em; color: #333; text-align: left; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Scannez ce QR Code</span>
                         </div>
-                        <div id="logo-container" style="width: 40px; height: 40px; border: 1px solid #0056b3; display: flex; justify-content: center; align-items: center; border-radius: 4px; padding: 2px; flex-grow: 1; min-width: 40px;">
-                            <img src="${card.logo}" alt="Logo" id="modal-logo" style="max-width: 100%; max-height: 100%; object-fit: contain;">
+                        <div class="logo-section" style="display: flex; align-items: center; gap: 5px; border: 1px solid #0056b3; padding: 2px; border-radius: 4px; flex-grow: 1; min-width: 40px; height: 40px; box-sizing: border-box; justify-content: flex-end;">
+                            <span id="slogan-text-modal" class="slogan-text" style="font-size: 0.4em; color: #333; text-align: right; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${card.slogan}</span>
+                            <img src="${card.logo}" alt="Logo" id="modal-logo" style="max-width: 40px; max-height: 40px; object-fit: contain; flex-shrink: 0;">
                         </div>
                     </div>
                     <div id="carte-footer" style="background-color: #007bff; color: #fff; text-align: center; padding: 3px 0; font-size: 0.6em; font-weight: bold; border-radius: 0 0 10px 10px; margin: 5px -8px -5px -8px;">
@@ -985,12 +1014,19 @@
             `;
             const qrImage = modalContentContainer.querySelector('#modal-qr');
             const logoImage = modalContentContainer.querySelector('#modal-logo');
+            const qrDesc = modalContentContainer.querySelector('.qr-description');
+            const sloganText = modalContentContainer.querySelector('#slogan-text-modal');
+
             if (document.body.classList.contains('dark-theme')) {
                 qrImage.style.filter = 'invert(1) hue-rotate(180deg)';
                 logoImage.style.filter = 'invert(1) hue-rotate(180deg)';
+                qrDesc.style.color = '#e0e0e0';
+                sloganText.style.color = '#e0e0e0';
             } else {
                 qrImage.style.filter = 'none';
                 logoImage.style.filter = 'none';
+                qrDesc.style.color = '#333';
+                sloganText.style.color = '#333';
             }
         }
 
@@ -1087,6 +1123,7 @@
                 numeroTelephone: document.getElementById('numeroTelephone').value.trim(),
                 email: document.getElementById('email').value.trim(),
                 fonction: document.getElementById('fonction').value.trim(),
+                slogan: document.getElementById('slogan').value.trim(),
                 photoFile: document.getElementById('photo').files[0],
                 logoFile: document.getElementById('logo').files[0]
             };
@@ -1116,6 +1153,7 @@
                 document.getElementById('display-numeroTelephone').textContent = formData.numeroTelephone;
                 document.getElementById('display-email').textContent = formData.email;
                 document.getElementById('carte-fonction').textContent = formData.fonction;
+                document.getElementById('slogan-text').textContent = formData.slogan;
 
                 if (formData.logoFile) {
                     const readerLogo = new FileReader();
@@ -1175,6 +1213,7 @@
                 numeroTelephone: document.getElementById('numeroTelephone').value, 
                 email: document.getElementById('email').value, 
                 fonction: document.getElementById('fonction').value, 
+                slogan: document.getElementById('slogan').value,
                 photo: document.getElementById('carte-photo').src,
                 logo: document.getElementById('logo-img').src
             };
@@ -1211,6 +1250,7 @@
                 numeroTelephone: document.getElementById('numeroTelephone').value, 
                 email: document.getElementById('email').value, 
                 fonction: document.getElementById('fonction').value, 
+                slogan: document.getElementById('slogan').value,
                 photo: document.getElementById('carte-photo').src,
                 logo: document.getElementById('logo-img').src
             };
