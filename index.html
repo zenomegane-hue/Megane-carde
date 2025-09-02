@@ -90,7 +90,7 @@
             margin-top: 0;
             color: #007bff;
         }
-
+        
         #carte-info p {
             font-size: 16px;
             color: #444;
@@ -107,10 +107,41 @@
             margin-bottom: 15px;
         }
 
-        .hidden {
-            display: none;
+        .download-buttons {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+
+        .download-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .download-btn.png {
+            background-color: #28a745;
+            color: #fff;
+        }
+
+        .download-btn.png:hover {
+            background-color: #218838;
+        }
+
+        .download-btn.pdf {
+            background-color: #dc3545;
+            color: #fff;
+        }
+
+        .download-btn.pdf:hover {
+            background-color: #c82333;
         }
     </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
 
@@ -164,15 +195,18 @@
                 <p><strong>Nationalité :</strong> <span id="display-nationalite"></span></p>
                 <p><strong>Lieu d'Habitation :</strong> <span id="display-lieuHabitation"></span></p>
             </div>
+            <div class="download-buttons">
+                <button id="download-png" class="download-btn png">Télécharger en PNG</button>
+                <button id="download-pdf" class="download-btn pdf">Télécharger en PDF</button>
+            </div>
         </div>
     </div>
 
     <script>
         // JavaScript
         document.getElementById('form-carte').addEventListener('submit', function(event) {
-            event.preventDefault(); // Empêche le rechargement de la page
+            event.preventDefault();
 
-            // Récupère les valeurs du formulaire
             const nom = document.getElementById('nom').value;
             const prenom = document.getElementById('prenom').value;
             const dateNaissance = document.getElementById('dateNaissance').value;
@@ -182,7 +216,6 @@
             const lieuHabitation = document.getElementById('lieuHabitation').value;
             const photoFile = document.getElementById('photo').files[0];
 
-            // Affiche les valeurs dans la carte
             document.getElementById('display-nom').textContent = nom;
             document.getElementById('display-prenom').textContent = prenom;
             document.getElementById('display-dateNaissance').textContent = dateNaissance;
@@ -191,7 +224,6 @@
             document.getElementById('display-nationalite').textContent = nationalite;
             document.getElementById('display-lieuHabitation').textContent = lieuHabitation;
 
-            // Gère l'affichage de la photo
             if (photoFile) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
@@ -201,7 +233,48 @@
                 reader.readAsDataURL(photoFile);
             }
         });
+
+        // Fonction pour télécharger en PNG
+        document.getElementById('download-png').addEventListener('click', function() {
+            const element = document.getElementById('carte-preview');
+            html2canvas(element).then(function(canvas) {
+                const link = document.createElement('a');
+                link.href = canvas.toDataURL('image/png');
+                link.download = 'carte-identite.png';
+                link.click();
+            });
+        });
+
+        // Fonction pour télécharger en PDF
+        document.getElementById('download-pdf').addEventListener('click', function() {
+            const element = document.getElementById('carte-preview');
+            
+            // Pour le PDF, la logique est un peu plus complexe pour ajuster la mise en page
+            html2canvas(element).then(function(canvas) {
+                const imgData = canvas.toDataURL('image/png');
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF();
+                
+                const imgWidth = 190; // Largeur de l'image sur le PDF
+                const pageHeight = 295;
+                const imgHeight = canvas.height * imgWidth / canvas.width;
+                let heightLeft = imgHeight;
+                let position = 0;
+                
+                pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
+                heightLeft -= pageHeight;
+                
+                while (heightLeft >= 0) {
+                    position = heightLeft - imgHeight;
+                    pdf.addPage();
+                    pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
+                    heightLeft -= pageHeight;
+                }
+                
+                pdf.save('carte-identite.pdf');
+            });
+        });
     </script>
 </body>
-  </html>
-  
+                    </html>
+                
