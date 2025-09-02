@@ -197,7 +197,6 @@
             align-items: flex-start;
             justify-content: space-between;
             flex-grow: 1;
-            /* Pas de padding-top ici, géré par le padding global de #carte-preview */
         }
 
         #carte-info {
@@ -646,4 +645,377 @@
                 <div id="carte-content">
                     <div id="carte-info">
                         <p><strong>Nom :</strong> <span id="display-nom"></span></p>
-                        <
+                        <p><strong>Prénom :</strong> <span id="display-prenom"></span></p>
+                        <p><strong>Né(e) le :</strong> <span id="display-dateNaissance"></span></p>
+                        <p><strong>à :</strong> <span id="display-lieuNaissance"></span></p>
+                        <p><strong>Ethnie :</strong> <span id="display-ethnie"></span></p>
+                        <p><strong>Nationalité :</strong> <span id="display-nationalite"></span></p>
+                        <p><strong>Résidence :</strong> <span id="display-lieuHabitation"></span></p>
+                        <p><strong>Tél. :</strong> <span id="display-numeroTelephone"></span></p>
+                        <p><strong>Email :</strong> <span id="display-email"></span></p>
+                    </div>
+                    <div id="carte-photo-container">
+                        <img id="carte-photo" src="" alt="Photo d'identité">
+                        <p id="carte-fonction"></p>
+                    </div>
+                </div>
+                <div id="carte-footer">
+                    <span>MA CARTE COMMUNAUTAIRE</span>
+                </div>
+            </div>
+            
+            <div class="download-buttons" style="display: none;">
+                <button id="download-png" class="download-btn png">Télécharger PNG</button>
+                <button id="download-pdf" class="download-btn pdf">Télécharger PDF</button>
+                <button id="save-card" class="download-btn btn-save-card">Enregistrer</button>
+            </div>
+        </div>
+        
+        <div id="gallery" style="display: none;">
+            <h2>Cartes Enregistrées</h2>
+            <div id="gallery-container">
+                </div>
+        </div>
+    </div>
+
+    <div id="previewModal" class="modal">
+        <span class="close-btn">&times;</span>
+        <div id="modal-content-container"></div>
+    </div>
+
+    <script>
+        // JavaScript
+        const cardData = JSON.parse(localStorage.getItem('savedCards')) || [];
+        const formContent = document.getElementById('main-content');
+        const galleryContent = document.getElementById('gallery');
+        const downloadButtons = document.querySelector('.download-buttons');
+        const cartePreview = document.getElementById('carte-preview');
+        const previewModal = document.getElementById('previewModal');
+        const modalContentContainer = document.getElementById('modal-content-container');
+        const menu = document.getElementById('menu');
+        const themeToggleButton = document.getElementById('theme-toggle');
+
+        // Initialisation du thème
+        function initTheme() {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            if (savedTheme === 'dark') {
+                document.body.classList.add('dark-theme');
+            }
+        }
+        initTheme();
+
+        // Fonction de validation du formulaire
+        function validateForm(formData) {
+            const nomRegex = /^[a-zA-ZÀ-ÿ\s'-]{2,50}$/;
+            const prenomRegex = /^[a-zA-ZÀ-ÿ\s'-]{2,50}$/;
+            if (!nomRegex.test(formData.nom) || !prenomRegex.test(formData.prenom)) {
+                alert("Le nom et le prénom doivent contenir entre 2 et 50 lettres (accents et espaces autorisés).");
+                return false;
+            }
+
+            const dateNaissance = new Date(formData.dateNaissance);
+            const today = new Date();
+            if (isNaN(dateNaissance.getTime()) || dateNaissance >= today) {
+                alert("La date de naissance doit être une date valide dans le passé.");
+                return false;
+            }
+
+            const emailRegex = /^\S+@\S+\.\S+$/;
+            if (!emailRegex.test(formData.email)) {
+                alert("Veuillez saisir une adresse email valide.");
+                return false;
+            }
+            const telRegex = /^\+?[0-9\s-]{6,15}$/;
+            if (!telRegex.test(formData.numeroTelephone)) {
+                alert("Veuillez saisir un numéro de téléphone valide (entre 6 et 15 chiffres, tirets, espaces ou '+' autorisés).");
+                return false;
+            }
+
+            const file = formData.photoFile;
+            if (file) {
+                const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+                if (!allowedTypes.includes(file.type)) {
+                    alert("Seuls les formats JPEG, PNG et JPG sont acceptés.");
+                    return false;
+                }
+                const maxFileSize = 2 * 1024 * 1024;
+                if (file.size > maxFileSize) {
+                    alert("La taille du fichier ne doit pas dépasser 2 Mo.");
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        function updateFormWithCardData(data) {
+            document.getElementById('carteNom').value = data.carteNom || '';
+            document.getElementById('nom').value = data.nom;
+            document.getElementById('prenom').value = data.prenom;
+            document.getElementById('dateNaissance').value = data.dateNaissance;
+            document.getElementById('lieuNaissance').value = data.lieuNaissance;
+            document.getElementById('ethnie').value = data.ethnie;
+            document.getElementById('nationalite').value = data.nationalite;
+            document.getElementById('lieuHabitation').value = data.lieuHabitation;
+            document.getElementById('numeroTelephone').value = data.numeroTelephone;
+            document.getElementById('email').value = data.email;
+            document.getElementById('fonction').value = data.fonction;
+            document.getElementById('carte-photo').src = data.photo;
+
+            document.getElementById('display-carte-nom').textContent = data.carteNom || 'Mégane-Carde';
+            document.getElementById('display-nom').textContent = data.nom;
+            document.getElementById('display-prenom').textContent = data.prenom;
+            document.getElementById('display-dateNaissance').textContent = data.dateNaissance;
+            document.getElementById('display-lieuNaissance').textContent = data.lieuNaissance;
+            document.getElementById('display-ethnie').textContent = data.ethnie || 'Non spécifié';
+            document.getElementById('display-nationalite').textContent = data.nationalite;
+            document.getElementById('display-lieuHabitation').textContent = data.lieuHabitation;
+            document.getElementById('display-numeroTelephone').textContent = data.numeroTelephone;
+            document.getElementById('display-email').textContent = data.email;
+            document.getElementById('carte-fonction').textContent = data.fonction;
+
+            cartePreview.style.display = 'flex';
+            downloadButtons.style.display = 'flex';
+            document.getElementById('preview-main-btn').style.display = 'block';
+        }
+
+        function renderGallery() {
+            const galleryContainer = document.getElementById('gallery-container');
+            galleryContainer.innerHTML = '';
+
+            cardData.forEach((card, index) => {
+                const newCard = document.createElement('div');
+                newCard.className = 'saved-card';
+                newCard.innerHTML = `
+                    <img src="${card.photo}" alt="Carte Enregistrée">
+                    <p><strong>Nom :</strong> ${card.nom}</p>
+                    <p><strong>Prénom :</strong> ${card.prenom}</p>
+                    <button class="preview-btn gallery-preview-btn">👁️</button>
+                `;
+                newCard.addEventListener('click', (e) => {
+                    if (!e.target.classList.contains('gallery-preview-btn')) {
+                        updateFormWithCardData(card);
+                        showForm();
+                    }
+                });
+                newCard.querySelector('.gallery-preview-btn').addEventListener('click', () => {
+                    showPreview(card);
+                });
+                galleryContainer.appendChild(newCard);
+            });
+        }
+
+        function showGallery() {
+            formContent.style.display = 'none';
+            galleryContent.style.display = 'block';
+            renderGallery();
+        }
+
+        function showForm() {
+            formContent.style.display = 'block';
+            galleryContent.style.display = 'none';
+        }
+
+        function clearForm() {
+            document.getElementById('form-carte').reset();
+            cartePreview.style.display = 'none';
+            downloadButtons.style.display = 'none';
+            document.getElementById('preview-main-btn').style.display = 'none';
+        }
+
+        function showPreview(card = null) {
+            modalContentContainer.innerHTML = '';
+            
+            let cardElement;
+            if (card) {
+                cardElement = document.createElement('div');
+                cardElement.className = 'modal-content';
+                cardElement.innerHTML = `
+                    <div style="text-align: center; border-bottom: 1px solid rgba(0, 86, 179, 0.2); padding-bottom: 2px; margin-bottom: 3px;">
+                        <h2 style="margin: 0; color: #0056b3; font-size: 0.8em; text-transform: uppercase; letter-spacing: 1px; font-weight: 700;">${card.carteNom || 'Mégane-Carde'}</h2>
+                    </div>
+                    <div style="display: flex; align-items: flex-start; justify-content: space-between; flex-grow: 1;">
+                        <div style="flex-grow: 1; padding-right: 5px; font-size: 0.4em; line-height: 1;">
+                            <p style="margin: 0;"><strong>Nom :</strong> ${card.nom}</p>
+                            <p style="margin: 0;"><strong>Prénom :</strong> ${card.prenom}</p>
+                            <p style="margin: 0;"><strong>Né(e) le :</strong> ${card.dateNaissance}</p>
+                            <p style="margin: 0;"><strong>à :</strong> ${card.lieuNaissance}</p>
+                            <p style="margin: 0;"><strong>Ethnie :</strong> ${card.ethnie || 'Non spécifié'}</p>
+                            <p style="margin: 0;"><strong>Nationalité :</strong> ${card.nationalite}</p>
+                            <p style="margin: 0;"><strong>Résidence :</strong> ${card.lieuHabitation}</p>
+                            <p style="margin: 0;"><strong>Tél. :</strong> ${card.numeroTelephone}</p>
+                            <p style="margin: 0;"><strong>Email :</strong> ${card.email}</p>
+                        </div>
+                        <div style="flex-shrink: 0; text-align: center; display: flex; flex-direction: column; align-items: center; width: 50px;">
+                            <img src="${card.photo}" style="width: 45px; height: 60px; border: 2px solid #0056b3; border-radius: 4px; object-fit: cover; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);">
+                            <p style="font-size: 0.45em; color: #004d80; font-weight: bold; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%;">${card.fonction}</p>
+                        </div>
+                    </div>
+                    <div style="background-color: #007bff; color: #fff; text-align: center; padding: 2px 0; font-size: 0.5em; font-weight: bold; border-radius: 0 0 10px 10px; margin: 5px -8px -5px -8px;">
+                        <span>MA CARTE COMMUNAUTAIRE</span>
+                    </div>
+                `;
+            } else {
+                cardElement = cartePreview.cloneNode(true);
+                cardElement.style.boxShadow = 'none';
+                cardElement.querySelector('.preview-btn').style.display = 'none';
+                cardElement.className = 'modal-content';
+            }
+
+            modalContentContainer.appendChild(cardElement);
+            previewModal.style.display = 'flex';
+        }
+
+        // Événements pour la modale
+        document.querySelector('.close-btn').addEventListener('click', () => {
+            previewModal.style.display = 'none';
+        });
+        window.addEventListener('click', (event) => {
+            if (event.target === previewModal) {
+                previewModal.style.display = 'none';
+            }
+        });
+
+        // Gestion du menu
+        document.getElementById('menu-toggle-btn').addEventListener('click', function() {
+            menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+        });
+        
+        document.getElementById('show-home').addEventListener('click', () => {
+            clearForm();
+            showForm();
+            menu.style.display = 'none';
+        });
+        
+        document.getElementById('show-gallery').addEventListener('click', () => {
+            showGallery();
+            menu.style.display = 'none';
+        });
+        
+        themeToggleButton.addEventListener('click', () => {
+            document.body.classList.toggle('dark-theme');
+            const currentTheme = document.body.classList.contains('dark-theme') ? 'dark' : 'light';
+            localStorage.setItem('theme', currentTheme);
+        });
+
+        // Soumission du formulaire
+        document.getElementById('form-carte').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const formData = {
+                carteNom: document.getElementById('carteNom').value.trim(),
+                nom: document.getElementById('nom').value.trim(),
+                prenom: document.getElementById('prenom').value.trim(),
+                dateNaissance: document.getElementById('dateNaissance').value,
+                lieuNaissance: document.getElementById('lieuNaissance').value.trim(),
+                ethnie: document.getElementById('ethnie').value.trim(),
+                nationalite: document.getElementById('nationalite').value.trim(),
+                lieuHabitation: document.getElementById('lieuHabitation').value.trim(),
+                numeroTelephone: document.getElementById('numeroTelephone').value.trim(),
+                email: document.getElementById('email').value.trim(),
+                fonction: document.getElementById('fonction').value.trim(),
+                photoFile: document.getElementById('photo').files[0]
+            };
+            
+            if (!validateForm(formData)) {
+                return;
+            }
+
+            // Normalisation des données
+            formData.nom = formData.nom.charAt(0).toUpperCase() + formData.nom.slice(1).toLowerCase();
+            formData.prenom = formData.prenom.charAt(0).toUpperCase() + formData.prenom.slice(1).toLowerCase();
+            formData.lieuNaissance = formData.lieuNaissance.charAt(0).toUpperCase() + formData.lieuNaissance.slice(1).toLowerCase();
+            formData.lieuHabitation = formData.lieuHabitation.charAt(0).toUpperCase() + formData.lieuHabitation.slice(1).toLowerCase();
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const photoDataUrl = e.target.result;
+
+                // Mise à jour de l'affichage de la carte
+                document.getElementById('display-carte-nom').textContent = formData.carteNom || 'Mégane-Carde';
+                document.getElementById('display-nom').textContent = formData.nom;
+                document.getElementById('display-prenom').textContent = formData.prenom;
+                document.getElementById('display-dateNaissance').textContent = formData.dateNaissance;
+                document.getElementById('display-lieuNaissance').textContent = formData.lieuNaissance;
+                document.getElementById('display-ethnie').textContent = formData.ethnie || 'Non spécifié';
+                document.getElementById('display-nationalite').textContent = formData.nationalite;
+                document.getElementById('display-lieuHabitation').textContent = formData.lieuHabitation;
+                document.getElementById('display-numeroTelephone').textContent = formData.numeroTelephone;
+                document.getElementById('display-email').textContent = formData.email;
+                document.getElementById('carte-fonction').textContent = formData.fonction;
+                document.getElementById('carte-photo').src = photoDataUrl;
+
+                cartePreview.style.display = 'flex';
+                downloadButtons.style.display = 'flex';
+                document.getElementById('preview-main-btn').style.display = 'block';
+            };
+            reader.readAsDataURL(formData.photoFile);
+        });
+
+        // Téléchargement et enregistrement
+        async function captureAndDownload(format) {
+            downloadButtons.style.display = 'none';
+            document.getElementById('preview-main-btn').style.display = 'none';
+            await new Promise(resolve => setTimeout(resolve, 50));
+            const canvas = await html2canvas(cartePreview, {
+                scale: 4, useCORS: true, width: cartePreview.offsetWidth, height: cartePreview.offsetHeight
+            });
+            downloadButtons.style.display = 'flex';
+            document.getElementById('preview-main-btn').style.display = 'block';
+
+            if (format === 'png') {
+                const link = document.createElement('a');
+                link.href = canvas.toDataURL('image/png');
+                link.download = (document.getElementById('carteNom').value || 'carte-megane') + '.png';
+                link.click();
+            } else if (format === 'pdf') {
+                const imgData = canvas.toDataURL('image/png');
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF({
+                    orientation: 'landscape', unit: 'mm', format: [85.60, 53.98] 
+                });
+                pdf.addImage(imgData, 'PNG', 0, 0, 85.60, 53.98); 
+                pdf.save((document.getElementById('carteNom').value || 'carte-megane') + '.pdf');
+            }
+        }
+        
+        document.getElementById('save-card').addEventListener('click', async function() {
+            const data = {
+                carteNom: document.getElementById('carteNom').value.trim() || 'Mégane-Carde',
+                nom: document.getElementById('nom').value, 
+                prenom: document.getElementById('prenom').value, 
+                dateNaissance: document.getElementById('dateNaissance').value, 
+                lieuNaissance: document.getElementById('lieuNaissance').value, 
+                ethnie: document.getElementById('ethnie').value, 
+                nationalite: document.getElementById('nationalite').value, 
+                lieuHabitation: document.getElementById('lieuHabitation').value, 
+                numeroTelephone: document.getElementById('numeroTelephone').value, 
+                email: document.getElementById('email').value, 
+                fonction: document.getElementById('fonction').value, 
+                photo: document.getElementById('carte-photo').src
+            };
+            const uniqueId = `${data.nom}-${data.prenom}-${data.dateNaissance}`;
+            const existingIndex = cardData.findIndex(card => `${card.nom}-${card.prenom}-${card.dateNaissance}` === uniqueId);
+            
+            if (existingIndex !== -1) {
+                if (confirm('Une carte avec ce nom, prénom et date de naissance existe déjà. Voulez-vous la mettre à jour ?')) {
+                    cardData[existingIndex] = data;
+                    localStorage.setItem('savedCards', JSON.stringify(cardData));
+                    alert('Carte mise à jour avec succès !');
+                } else {
+                    alert('Opération annulée.');
+                }
+            } else {
+                cardData.push(data);
+                localStorage.setItem('savedCards', JSON.stringify(cardData));
+                alert('Carte enregistrée avec succès !');
+            }
+        });
+
+        // Événements des boutons
+        document.getElementById('download-png').addEventListener('click', () => captureAndDownload('png'));
+        document.getElementById('download-pdf').addEventListener('click', () => captureAndDownload('pdf'));
+        document.getElementById('preview-main-btn').addEventListener('click', () => showPreview());
+    </script>
+</body>
+</html>
