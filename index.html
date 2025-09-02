@@ -335,23 +335,49 @@
 
         /* Styles de la modale d'aperçu */
         .modal {
+            position: fixed;
+            z-index: 100;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
             background-color: rgba(0, 0, 0, 0.6);
             backdrop-filter: blur(8px);
+            display: none;
+            justify-content: center;
+            align-items: center;
         }
 
         .modal-content {
             border: 3px solid #0056b3;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
             background: linear-gradient(135deg, #e0f7fa 0%, #bbdefb 100%);
+            border-radius: 12px;
+            padding: 15px;
+            position: relative;
+            transform: scale(1.1);
+            transition: transform 0.3s ease-out;
+        }
+        
+        .modal.show .modal-content {
+            transform: scale(1);
         }
 
         .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 20px;
             color: #fff;
+            font-size: 40px;
+            font-weight: bold;
             text-shadow: 0 0 5px rgba(0,0,0,0.5);
+            cursor: pointer;
         }
         .close-btn:hover,
         .close-btn:focus {
             color: #ff6b6b;
+            text-decoration: none;
+            cursor: pointer;
         }
 
         .preview-btn {
@@ -607,37 +633,31 @@
             let cardElement;
             if (card) {
                 cardElement = document.createElement('div');
-                cardElement.id = 'carte-preview-modal';
-                cardElement.style.width = '85.60mm';
-                cardElement.style.height = '53.98mm';
-                cardElement.style.padding = '15px';
-                cardElement.style.border = '2px solid #007bff';
-                cardElement.style.borderRadius = '8px';
-                cardElement.style.backgroundColor = '#fdfdfd';
+                cardElement.className = 'modal-content';
                 cardElement.innerHTML = `
-                    <div style="text-align: center;">
-                        <h2 style="margin: 0 0 5px 0; color: #007bff; font-size: 14px; text-transform: uppercase;">Mégane-Carde</h2>
+                    <div style="text-align: center; border-bottom: 1px solid rgba(0, 86, 179, 0.2); padding-bottom: 8px; margin-bottom: 10px;">
+                        <h2 style="margin: 0; color: #0056b3; font-size: 1.1em; text-transform: uppercase; letter-spacing: 2px; font-weight: 700;">Mégane-Carde</h2>
                     </div>
                     <div style="display: flex; align-items: flex-start; justify-content: space-between; flex-grow: 1; padding-top: 5px;">
-                        <div style="flex-grow: 1; padding-right: 10px;">
-                            <p style="font-size: 9px; margin: 2px 0;"><strong>Nom :</strong> ${card.nom}</p>
-                            <p style="font-size: 9px; margin: 2px 0;"><strong>Prénom :</strong> ${card.prenom}</p>
-                            <p style="font-size: 9px; margin: 2px 0;"><strong>Date de Naissance :</strong> ${card.dateNaissance}</p>
-                            <p style="font-size: 9px; margin: 2px 0;"><strong>Lieu de Naissance :</strong> ${card.lieuNaissance}</p>
-                            <p style="font-size: 9px; margin: 2px 0;"><strong>Ethnie :</strong> ${card.ethnie || 'Non spécifié'}</p>
-                            <p style="font-size: 9px; margin: 2px 0;"><strong>Nationalité :</strong> ${card.nationalite}</p>
-                            <p style="font-size: 9px; margin: 2px 0;"><strong>Lieu d'Habitation :</strong> ${card.lieuHabitation}</p>
-                            <p style="font-size: 9px; margin: 2px 0;"><strong>Téléphone :</strong> ${card.numeroTelephone}</p>
-                            <p style="font-size: 9px; margin: 2px 0;"><strong>Email :</strong> ${card.email}</p>
+                        <div style="flex-grow: 1; padding-right: 15px; font-size: 0.7em; line-height: 1.4;">
+                            <p style="margin: 2px 0;"><strong>Nom :</strong> ${card.nom}</p>
+                            <p style="margin: 2px 0;"><strong>Prénom :</strong> ${card.prenom}</p>
+                            <p style="margin: 2px 0;"><strong>Date de Naissance :</strong> ${card.dateNaissance}</p>
+                            <p style="margin: 2px 0;"><strong>Lieu de Naissance :</strong> ${card.lieuNaissance}</p>
+                            <p style="margin: 2px 0;"><strong>Ethnie :</strong> ${card.ethnie || 'Non spécifié'}</p>
+                            <p style="margin: 2px 0;"><strong>Nationalité :</strong> ${card.nationalite}</p>
+                            <p style="margin: 2px 0;"><strong>Lieu d'Habitation :</strong> ${card.lieuHabitation}</p>
+                            <p style="margin: 2px 0;"><strong>Téléphone :</strong> ${card.numeroTelephone}</p>
+                            <p style="margin: 2px 0;"><strong>Email :</strong> ${card.email}</p>
                         </div>
-                        <img src="${card.photo}" style="width: 50px; height: 65px; border: 1px solid #ddd; border-radius: 4px; object-fit: cover; flex-shrink: 0;">
+                        <img src="${card.photo}" style="width: 60px; height: 80px; border: 2px solid #0056b3; border-radius: 6px; object-fit: cover; flex-shrink: 0;">
                     </div>
                 `;
             } else {
                 cardElement = cartePreview.cloneNode(true);
-                cardElement.style.display = 'flex';
                 cardElement.style.boxShadow = 'none';
                 cardElement.querySelector('.preview-btn').style.display = 'none';
+                cardElement.className = 'modal-content';
             }
 
             modalContentContainer.appendChild(cardElement);
