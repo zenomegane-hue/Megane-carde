@@ -310,7 +310,7 @@
             object-fit: contain;
             flex-shrink: 0;
         }
-
+        
         #qr-code {
             order: 1;
         }
@@ -999,6 +999,19 @@
             document.getElementById('carte-photo').src = ""; 
             document.getElementById('logo-img').src = ""; 
             document.getElementById('qr-code').innerHTML = "";
+
+            document.getElementById('display-carte-nom').textContent = "Mégane-Carde";
+            document.getElementById('display-nom').textContent = "";
+            document.getElementById('display-prenom').textContent = "";
+            document.getElementById('display-dateNaissance').textContent = "";
+            document.getElementById('display-lieuNaissance').textContent = "";
+            document.getElementById('display-ethnie').textContent = "";
+            document.getElementById('display-nationalite').textContent = "";
+            document.getElementById('display-lieuHabitation').textContent = "";
+            document.getElementById('display-numeroTelephone').textContent = "";
+            document.getElementById('display-email').textContent = "";
+            document.getElementById('carte-fonction').textContent = "";
+            document.getElementById('slogan-text').textContent = "";
         }
 
         function updateModalContent(card) {
@@ -1194,8 +1207,8 @@
                 }
 
                 generateQRCode();
-                carte-preview.style.display = 'flex';
-                download-buttons.style.display = 'flex';
+                cartePreview.style.display = 'flex';
+                downloadButtons.style.display = 'flex';
                 document.getElementById('preview-main-btn').style.display = 'block';
             };
             readerPhoto.readAsDataURL(formData.photoFile);
