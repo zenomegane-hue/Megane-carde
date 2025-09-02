@@ -255,9 +255,10 @@
         #qr-and-logo-container {
             display: flex;
             justify-content: space-between;
-            align-items: flex-end; /* Alignement en bas pour les descriptions */
+            align-items: center;
             width: 100%;
             margin: 5px 0;
+            gap: 5px;
         }
 
         .qr-section, .logo-section {
@@ -268,33 +269,50 @@
             padding: 2px;
             border-radius: 4px;
             flex-grow: 1;
-            min-width: 40px;
             height: 40px;
             box-sizing: border-box;
+            min-width: 0; /* Permet au contenu de se réduire */
         }
         
         .qr-section {
             justify-content: flex-start;
+            padding-left: 5px;
         }
-
-        .logo-section {
-            justify-content: flex-end;
-        }
-
-        .qr-description, .slogan-text {
-            font-size: 0.4em;
+        
+        .qr-section .qr-description {
+            font-size: 0.5em;
             color: #333;
             text-align: left;
+            flex-grow: 1;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
+
+        .logo-section {
+            justify-content: flex-end;
+            padding-right: 5px;
+        }
         
+        .logo-section .slogan-text {
+            font-size: 0.5em;
+            color: #333;
+            text-align: right;
+            flex-grow: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
         #qr-code, #logo-img {
-            max-width: 40px;
-            max-height: 40px;
+            width: 35px;
+            height: 35px;
             object-fit: contain;
             flex-shrink: 0;
+        }
+        
+        #logo-img {
+            order: 2; /* S'assure que le logo est à droite */
         }
 
         #carte-footer {
@@ -735,7 +753,7 @@
                 </div>
                 <div class="form-group">
                     <label for="slogan">Slogan (optionnel) :</label>
-                    <input type="text" id="slogan">
+                    <input type="text" id="slogan" maxlength="25">
                 </div>
                 <div class="form-group">
                     <label for="photo">Photo :</label>
@@ -776,8 +794,8 @@
                         <span class="qr-description">Scannez ce QR Code</span>
                     </div>
                     <div class="logo-section">
-                        <img id="logo-img" src="" alt="Logo">
                         <span id="slogan-text" class="slogan-text"></span>
+                        <img id="logo-img" src="" alt="Logo">
                     </div>
                 </div>
                 <div id="carte-footer">
@@ -997,14 +1015,14 @@
                             <p id="carte-fonction" style="font-size: 0.55em; color: #004d80; font-weight: bold; margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%;">${card.fonction}</p>
                         </div>
                     </div>
-                    <div id="qr-and-logo-container" style="display: flex; justify-content: space-between; align-items: flex-end; width: 100%; margin: 5px 0;">
-                        <div class="qr-section" style="display: flex; align-items: center; gap: 5px; border: 1px solid #0056b3; padding: 2px; border-radius: 4px; flex-grow: 1; min-width: 40px; height: 40px; box-sizing: border-box; justify-content: flex-start;">
-                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=40x40&data=https://zenomegane-hue.github.io/Megane-carde/" alt="QR Code" id="modal-qr" style="max-width: 40px; max-height: 40px; object-fit: contain; flex-shrink: 0;">
-                            <span class="qr-description" style="font-size: 0.4em; color: #333; text-align: left; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Scannez ce QR Code</span>
+                    <div id="qr-and-logo-container" style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin: 5px 0; gap: 5px;">
+                        <div class="qr-section" style="display: flex; align-items: center; gap: 5px; border: 1px solid #0056b3; padding: 2px 5px; border-radius: 4px; flex-grow: 1; height: 40px; box-sizing: border-box; justify-content: flex-start;">
+                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=35x35&data=https://zenomegane-hue.github.io/Megane-carde/" alt="QR Code" id="modal-qr" style="width: 35px; height: 35px; object-fit: contain; flex-shrink: 0;">
+                            <span class="qr-description" style="font-size: 0.5em; color: #333; text-align: left; flex-grow: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Scannez ce QR Code</span>
                         </div>
-                        <div class="logo-section" style="display: flex; align-items: center; gap: 5px; border: 1px solid #0056b3; padding: 2px; border-radius: 4px; flex-grow: 1; min-width: 40px; height: 40px; box-sizing: border-box; justify-content: flex-end;">
-                            <span id="slogan-text-modal" class="slogan-text" style="font-size: 0.4em; color: #333; text-align: right; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${card.slogan}</span>
-                            <img src="${card.logo}" alt="Logo" id="modal-logo" style="max-width: 40px; max-height: 40px; object-fit: contain; flex-shrink: 0;">
+                        <div class="logo-section" style="display: flex; align-items: center; gap: 5px; border: 1px solid #0056b3; padding: 2px 5px; border-radius: 4px; flex-grow: 1; height: 40px; box-sizing: border-box; justify-content: flex-end;">
+                            <span id="slogan-text-modal" class="slogan-text" style="font-size: 0.5em; color: #333; text-align: right; flex-grow: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${card.slogan}</span>
+                            <img src="${card.logo}" alt="Logo" id="modal-logo" style="width: 35px; height: 35px; object-fit: contain; flex-shrink: 0;">
                         </div>
                     </div>
                     <div id="carte-footer" style="background-color: #007bff; color: #fff; text-align: center; padding: 3px 0; font-size: 0.6em; font-weight: bold; border-radius: 0 0 10px 10px; margin: 5px -8px -5px -8px;">
@@ -1054,8 +1072,8 @@
             qrCodeDiv.innerHTML = "";
             new QRCode(qrCodeDiv, {
                 text: "https://zenomegane-hue.github.io/Megane-carde/",
-                width: 40,
-                height: 40,
+                width: 35,
+                height: 35,
                 colorDark : "#000000",
                 colorLight : "#ffffff",
                 correctLevel : QRCode.CorrectLevel.H
