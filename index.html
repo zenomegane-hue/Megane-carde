@@ -158,10 +158,10 @@
             background: linear-gradient(135deg, #e0f7fa 0%, #bbdefb 100%);
             border: 2px solid #0056b3;
             border-radius: 12px;
-            padding: 20px;
+            padding: 8px 12px;
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
             width: 85.60mm;
-            height: 63.98mm; 
+            height: 53.98mm; 
             position: relative;
             box-sizing: border-box;
             display: flex;
@@ -178,16 +178,16 @@
         #carte-header {
             text-align: center;
             border-bottom: 1px solid rgba(0, 86, 179, 0.2);
-            padding-bottom: 8px;
-            margin-bottom: 10px;
+            padding-bottom: 3px;
+            margin-bottom: 5px;
         }
 
         #carte-header h2 {
             margin: 0;
             color: #0056b3;
-            font-size: 1.1em;
+            font-size: 0.9em;
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 1px;
             font-weight: 700;
             transition: color 0.5s ease;
         }
@@ -197,27 +197,26 @@
             align-items: flex-start;
             justify-content: space-between;
             flex-grow: 1;
-            padding-top: 5px;
         }
 
         #carte-info {
             flex-grow: 1;
-            padding-right: 15px;
-            font-size: 0.6em; 
-            line-height: 1.2; 
+            padding-right: 8px;
+            font-size: 0.45em; 
+            line-height: 1.1; 
             transition: color 0.5s ease;
         }
         
         #carte-info p {
             color: #333;
             text-align: left;
-            margin: 1px 0; 
+            margin: 0px 0; 
             transition: color 0.5s ease;
         }
 
         #carte-info strong {
             display: inline-block;
-            width: 60px; 
+            width: 48px; 
             color: #004d80;
             font-weight: 600;
             transition: color 0.5s ease;
@@ -229,23 +228,23 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            width: 80px;
+            width: 55px;
         }
 
         #carte-photo {
-            width: 60px;
-            height: 80px;
+            width: 50px;
+            height: 65px;
             border: 2px solid #0056b3;
-            border-radius: 6px;
+            border-radius: 4px;
             object-fit: cover;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
         }
         
         #carte-fonction {
-            font-size: 0.6em;
+            font-size: 0.5em;
             color: #004d80;
             font-weight: bold;
-            margin-top: 5px;
+            margin-top: 3px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -387,12 +386,12 @@
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
             background: linear-gradient(135deg, #e0f7fa 0%, #bbdefb 100%);
             border-radius: 12px;
-            padding: 15px;
+            padding: 8px 12px;
             position: relative;
             transform: scale(1.1);
             transition: transform 0.3s ease-out;
             width: 85.60mm; 
-            height: 63.98mm; 
+            height: 53.98mm; 
             box-sizing: border-box; 
             overflow: hidden;
         }
@@ -567,6 +566,10 @@
         <div id="main-content">
             <form id="form-carte">
                 <div class="form-group">
+                    <label for="carteNom">Nom de la Carte :</label>
+                    <input type="text" id="carteNom" placeholder="Nom par défaut : Mégane-Carde">
+                </div>
+                <div class="form-group">
                     <label for="nom">Nom :</label>
                     <input type="text" id="nom" required>
                 </div>
@@ -616,7 +619,7 @@
             <div id="carte-preview" style="display: none;">
                 <button class="preview-btn" id="preview-main-btn" style="display:none;">👁️</button>
                 <div id="carte-header">
-                    <h2>Mégane-Carde</h2>
+                    <h2 id="display-carte-nom">Mégane-Carde</h2>
                 </div>
                 <div id="carte-content">
                     <div id="carte-info">
@@ -722,6 +725,7 @@
         }
 
         function updateFormWithCardData(data) {
+            document.getElementById('carteNom').value = data.carteNom || '';
             document.getElementById('nom').value = data.nom;
             document.getElementById('prenom').value = data.prenom;
             document.getElementById('dateNaissance').value = data.dateNaissance;
@@ -734,6 +738,7 @@
             document.getElementById('fonction').value = data.fonction;
             document.getElementById('carte-photo').src = data.photo;
 
+            document.getElementById('display-carte-nom').textContent = data.carteNom || 'Mégane-Carde';
             document.getElementById('display-nom').textContent = data.nom;
             document.getElementById('display-prenom').textContent = data.prenom;
             document.getElementById('display-dateNaissance').textContent = data.dateNaissance;
@@ -802,24 +807,24 @@
                 cardElement = document.createElement('div');
                 cardElement.className = 'modal-content';
                 cardElement.innerHTML = `
-                    <div style="text-align: center; border-bottom: 1px solid rgba(0, 86, 179, 0.2); padding-bottom: 8px; margin-bottom: 10px;">
-                        <h2 style="margin: 0; color: #0056b3; font-size: 1.1em; text-transform: uppercase; letter-spacing: 2px; font-weight: 700;">Mégane-Carde</h2>
+                    <div style="text-align: center; border-bottom: 1px solid rgba(0, 86, 179, 0.2); padding-bottom: 3px; margin-bottom: 5px;">
+                        <h2 style="margin: 0; color: #0056b3; font-size: 0.9em; text-transform: uppercase; letter-spacing: 1px; font-weight: 700;">${card.carteNom || 'Mégane-Carde'}</h2>
                     </div>
-                    <div style="display: flex; align-items: flex-start; justify-content: space-between; flex-grow: 1; padding-top: 5px;">
-                        <div style="flex-grow: 1; padding-right: 15px; font-size: 0.6em; line-height: 1.2;">
-                            <p style="margin: 1px 0;"><strong>Nom :</strong> ${card.nom}</p>
-                            <p style="margin: 1px 0;"><strong>Prénom :</strong> ${card.prenom}</p>
-                            <p style="margin: 1px 0;"><strong>Né(e) le :</strong> ${card.dateNaissance}</p>
-                            <p style="margin: 1px 0;"><strong>à :</strong> ${card.lieuNaissance}</p>
-                            <p style="margin: 1px 0;"><strong>Ethnie :</strong> ${card.ethnie || 'Non spécifié'}</p>
-                            <p style="margin: 1px 0;"><strong>Nationalité :</strong> ${card.nationalite}</p>
-                            <p style="margin: 1px 0;"><strong>Résidence :</strong> ${card.lieuHabitation}</p>
-                            <p style="margin: 1px 0;"><strong>Tél. :</strong> ${card.numeroTelephone}</p>
-                            <p style="margin: 1px 0;"><strong>Email :</strong> ${card.email}</p>
+                    <div style="display: flex; align-items: flex-start; justify-content: space-between; flex-grow: 1;">
+                        <div style="flex-grow: 1; padding-right: 8px; font-size: 0.45em; line-height: 1.1;">
+                            <p style="margin: 0px 0;"><strong>Nom :</strong> ${card.nom}</p>
+                            <p style="margin: 0px 0;"><strong>Prénom :</strong> ${card.prenom}</p>
+                            <p style="margin: 0px 0;"><strong>Né(e) le :</strong> ${card.dateNaissance}</p>
+                            <p style="margin: 0px 0;"><strong>à :</strong> ${card.lieuNaissance}</p>
+                            <p style="margin: 0px 0;"><strong>Ethnie :</strong> ${card.ethnie || 'Non spécifié'}</p>
+                            <p style="margin: 0px 0;"><strong>Nationalité :</strong> ${card.nationalite}</p>
+                            <p style="margin: 0px 0;"><strong>Résidence :</strong> ${card.lieuHabitation}</p>
+                            <p style="margin: 0px 0;"><strong>Tél. :</strong> ${card.numeroTelephone}</p>
+                            <p style="margin: 0px 0;"><strong>Email :</strong> ${card.email}</p>
                         </div>
-                        <div style="flex-shrink: 0; text-align: center; display: flex; flex-direction: column; align-items: center; width: 80px;">
-                            <img src="${card.photo}" style="width: 60px; height: 80px; border: 2px solid #0056b3; border-radius: 6px; object-fit: cover; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);">
-                            <p style="font-size: 0.6em; color: #004d80; font-weight: bold; margin-top: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%;">${card.fonction}</p>
+                        <div style="flex-shrink: 0; text-align: center; display: flex; flex-direction: column; align-items: center; width: 55px;">
+                            <img src="${card.photo}" style="width: 50px; height: 65px; border: 2px solid #0056b3; border-radius: 4px; object-fit: cover; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);">
+                            <p style="font-size: 0.5em; color: #004d80; font-weight: bold; margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%;">${card.fonction}</p>
                         </div>
                     </div>
                 `;
@@ -871,6 +876,7 @@
             event.preventDefault();
 
             const formData = {
+                carteNom: document.getElementById('carteNom').value.trim(),
                 nom: document.getElementById('nom').value.trim(),
                 prenom: document.getElementById('prenom').value.trim(),
                 dateNaissance: document.getElementById('dateNaissance').value,
@@ -893,6 +899,7 @@
             formData.lieuNaissance = formData.lieuNaissance.charAt(0).toUpperCase() + formData.lieuNaissance.slice(1).toLowerCase();
             formData.lieuHabitation = formData.lieuHabitation.charAt(0).toUpperCase() + formData.lieuHabitation.slice(1).toLowerCase();
 
+            document.getElementById('display-carte-nom').textContent = formData.carteNom || 'Mégane-Carde';
             document.getElementById('display-nom').textContent = formData.nom;
             document.getElementById('display-prenom').textContent = formData.prenom;
             document.getElementById('display-dateNaissance').textContent = formData.dateNaissance;
@@ -934,16 +941,27 @@
                 const imgData = canvas.toDataURL('image/png');
                 const { jsPDF } = window.jspdf;
                 const pdf = new jsPDF({
-                    orientation: 'landscape', unit: 'mm', format: [85.60, 63.98] 
+                    orientation: 'landscape', unit: 'mm', format: [85.60, 53.98] 
                 });
-                pdf.addImage(imgData, 'PNG', 0, 0, 85.60, 63.98); 
+                pdf.addImage(imgData, 'PNG', 0, 0, 85.60, 53.98); 
                 pdf.save('carte-megane.pdf');
             }
         }
         
         document.getElementById('save-card').addEventListener('click', async function() {
             const data = {
-                nom: document.getElementById('nom').value, prenom: document.getElementById('prenom').value, dateNaissance: document.getElementById('dateNaissance').value, lieuNaissance: document.getElementById('lieuNaissance').value, ethnie: document.getElementById('ethnie').value, nationalite: document.getElementById('nationalite').value, lieuHabitation: document.getElementById('lieuHabitation').value, numeroTelephone: document.getElementById('numeroTelephone').value, email: document.getElementById('email').value, fonction: document.getElementById('fonction').value, photo: document.getElementById('carte-photo').src
+                carteNom: document.getElementById('carteNom').value.trim() || 'Mégane-Carde',
+                nom: document.getElementById('nom').value, 
+                prenom: document.getElementById('prenom').value, 
+                dateNaissance: document.getElementById('dateNaissance').value, 
+                lieuNaissance: document.getElementById('lieuNaissance').value, 
+                ethnie: document.getElementById('ethnie').value, 
+                nationalite: document.getElementById('nationalite').value, 
+                lieuHabitation: document.getElementById('lieuHabitation').value, 
+                numeroTelephone: document.getElementById('numeroTelephone').value, 
+                email: document.getElementById('email').value, 
+                fonction: document.getElementById('fonction').value, 
+                photo: document.getElementById('carte-photo').src
             };
             const uniqueId = `${data.nom}-${data.prenom}-${data.dateNaissance}`;
             const existingIndex = cardData.findIndex(card => `${card.nom}-${card.prenom}-${card.dateNaissance}` === uniqueId);
