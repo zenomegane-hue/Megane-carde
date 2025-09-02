@@ -555,4 +555,109 @@
             previewModal.style.display = 'none';
         });
         window.addEventListener('click', (event) => {
-            if (event.target === preview
+            if (event.target === previewModal) {
+                previewModal.style.display = 'none';
+            }
+        });
+
+        // Gestion du menu
+        document.getElementById('menu-toggle-btn').addEventListener('click', function() {
+            menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+        });
+
+        document.getElementById('show-gallery').addEventListener('click', () => {
+            showGallery();
+            menu.style.display = 'none';
+        });
+
+        document.getElementById('show-form').addEventListener('click', () => {
+            clearForm();
+            showForm();
+            menu.style.display = 'none';
+        });
+
+        // Soumission du formulaire
+        document.getElementById('form-carte').addEventListener('submit', function(event) {
+            event.preventDefault(); // Empêche le rechargement de la page
+
+            const nom = document.getElementById('nom').value;
+            const prenom = document.getElementById('prenom').value;
+            const dateNaissance = document.getElementById('dateNaissance').value;
+            const lieuNaissance = document.getElementById('lieuNaissance').value;
+            const ethnie = document.getElementById('ethnie').value;
+            const nationalite = document.getElementById('nationalite').value;
+            const lieuHabitation = document.getElementById('lieuHabitation').value;
+            const numeroTelephone = document.getElementById('numeroTelephone').value;
+            const email = document.getElementById('email').value;
+            const photoFile = document.getElementById('photo').files[0];
+
+            document.getElementById('display-nom').textContent = nom;
+            document.getElementById('display-prenom').textContent = prenom;
+            document.getElementById('display-dateNaissance').textContent = dateNaissance;
+            document.getElementById('display-lieuNaissance').textContent = lieuNaissance;
+            document.getElementById('display-ethnie').textContent = ethnie || 'Non spécifié';
+            document.getElementById('display-nationalite').textContent = nationalite;
+            document.getElementById('display-lieuHabitation').textContent = lieuHabitation;
+            document.getElementById('display-numeroTelephone').textContent = numeroTelephone;
+            document.getElementById('display-email').textContent = email;
+
+            if (photoFile) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('carte-photo').src = e.target.result;
+                    cartePreview.style.display = 'flex';
+                    downloadButtons.style.display = 'flex';
+                    document.getElementById('preview-main-btn').style.display = 'block';
+                };
+                reader.readAsDataURL(photoFile);
+            }
+        });
+
+        // Téléchargement et enregistrement
+        async function captureAndDownload(format) {
+            downloadButtons.style.display = 'none';
+            document.getElementById('preview-main-btn').style.display = 'none';
+            await new Promise(resolve => setTimeout(resolve, 50));
+            const canvas = await html2canvas(cartePreview, {
+                scale: 4, useCORS: true, width: cartePreview.offsetWidth, height: cartePreview.offsetHeight
+            });
+            downloadButtons.style.display = 'flex';
+            document.getElementById('preview-main-btn').style.display = 'block';
+
+            if (format === 'png') {
+                const link = document.createElement('a');
+                link.href = canvas.toDataURL('image/png');
+                link.download = 'carte-megane.png';
+                link.click();
+            } else if (format === 'pdf') {
+                const imgData = canvas.toDataURL('image/png');
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF({
+                    orientation: 'landscape', unit: 'mm', format: [85.60, 53.98]
+                });
+                pdf.addImage(imgData, 'PNG', 0, 0, 85.60, 53.98);
+                pdf.save('carte-megane.pdf');
+            }
+        }
+        
+        document.getElementById('save-card').addEventListener('click', async function() {
+            const data = {
+                nom: document.getElementById('nom').value, prenom: document.getElementById('prenom').value, dateNaissance: document.getElementById('dateNaissance').value, lieuNaissance: document.getElementById('lieuNaissance').value, ethnie: document.getElementById('ethnie').value, nationalite: document.getElementById('nationalite').value, lieuHabitation: document.getElementById('lieuHabitation').value, numeroTelephone: document.getElementById('numeroTelephone').value, email: document.getElementById('email').value, photo: document.getElementById('carte-photo').src
+            };
+            const existingIndex = cardData.findIndex(card => card.nom === data.nom && card.prenom === data.prenom);
+            if (existingIndex !== -1) {
+                cardData[existingIndex] = data;
+            } else {
+                cardData.push(data);
+            }
+            localStorage.setItem('savedCards', JSON.stringify(cardData));
+            alert('Carte enregistrée avec succès !');
+        });
+
+        // Événements des boutons
+        document.getElementById('download-png').addEventListener('click', () => captureAndDownload('png'));
+        document.getElementById('download-pdf').addEventListener('click', () => captureAndDownload('pdf'));
+        document.getElementById('preview-main-btn').addEventListener('click', () => showPreview());
+    </script>
+</body>
+</html>
