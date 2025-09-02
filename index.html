@@ -1,127 +1,207 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <title>Formulaire d'inscription</title>
-  <style>
-    body {
-      background: #f2f6fa;
-      font-family: 'Segoe UI', Arial, sans-serif;
-      color: #222;
-      margin: 0;
-      padding: 0;
-    }
-    .container {
-      max-width: 500px;
-      margin: 40px auto;
-      background: #fff;
-      box-shadow: 0 0 8px rgba(0,0,0,0.07);
-      padding: 30px 40px 40px 40px;
-      border-radius: 8px;
-    }
-    h1 {
-      text-align: center;
-      color: #205081;
-      margin-bottom: 24px;
-    }
-    .form-group {
-      margin-bottom: 18px;
-    }
-    label {
-      font-weight: 500;
-      margin-bottom: 6px;
-      display: block;
-    }
-    input[type="text"], input[type="date"], input[type="file"] {
-      width: 100%;
-      padding: 9px;
-      border: 1px solid #b4cbe2;
-      border-radius: 4px;
-      margin-bottom: 4px;
-      box-sizing: border-box;
-    }
-    button {
-      display: block;
-      width: 100%;
-      padding: 11px 0;
-      background: #205081;
-      color: #fff;
-      border: none;
-      border-radius: 4px;
-      font-size: 1.08em;
-      font-weight: bold;
-      cursor: pointer;
-      margin-top: 12px;
-      transition: background 0.2s;
-    }
-    button:hover {
-      background: #3071c0;
-    }
-    img {
-      max-width: 180px;
-      margin-top: 8px;
-      border-radius: 5px;
-      box-shadow: 0 2px 8px rgba(32,80,129,0.15);
-    }
-    #result {
-      background: #edf3fa;
-      border-radius: 6px;
-      padding: 16px;
-      margin-top: 24px;
-      box-shadow: 0 0 4px rgba(32,80,129,0.07);
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Création de Carte d'Identité</title>
+    <style>
+        /* CSS */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        input[type="text"],
+        input[type="date"],
+        input[type="file"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        input[type="file"] {
+            padding: 3px;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 15px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-submit:hover {
+            background-color: #0056b3;
+        }
+
+        #carte-preview {
+            margin-top: 30px;
+            border: 2px solid #ccc;
+            border-radius: 10px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            display: none; /* Cachée par défaut */
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        #carte-preview h2 {
+            margin-top: 0;
+            color: #007bff;
+        }
+
+        #carte-info p {
+            font-size: 16px;
+            color: #444;
+            text-align: left;
+            margin: 10px 0;
+        }
+
+        #carte-photo {
+            width: 120px;
+            height: 150px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            object-fit: cover;
+            margin-bottom: 15px;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Enregistrement des informations</h1>
-    <form id="registrationForm">
-      <div class="form-group">
-        <label for="name">Nom :</label>
-        <input type="text" id="name" name="name" required>
-      </div>
-      <div class="form-group">
-        <label for="dob">Date de naissance :</label>
-        <input type="date" id="dob" name="dob" required>
-      </div>
-      <div class="form-group">
-        <label for="photo">Photo :</label>
-        <input type="file" id="photo" name="photo" accept="image/*">
-        <img id="preview" src="" alt="Aperçu de la photo" style="display:none;">
-      </div>
-      <button type="submit">Enregistrer</button>
-    </form>
 
-    <div id="result"></div>
-  </div>
-  <script>
-    // Aperçu de la photo sélectionnée
-    document.getElementById('photo').addEventListener('change', function(event) {
-      const preview = document.getElementById('preview');
-      const file = event.target.files[0];
-      if (file) {
-        preview.src = URL.createObjectURL(file);
-        preview.style.display = 'block';
-      } else {
-        preview.src = '';
-        preview.style.display = 'none';
-      }
-    });
+    <div class="container">
+        <h1>Création de Carte d'Identité</h1>
+        <form id="form-carte">
+            <div class="form-group">
+                <label for="nom">Nom :</label>
+                <input type="text" id="nom" required>
+            </div>
+            <div class="form-group">
+                <label for="prenom">Prénom :</label>
+                <input type="text" id="prenom" required>
+            </div>
+            <div class="form-group">
+                <label for="dateNaissance">Date de Naissance :</label>
+                <input type="date" id="dateNaissance" required>
+            </div>
+            <div class="form-group">
+                <label for="lieuNaissance">Lieu de Naissance :</label>
+                <input type="text" id="lieuNaissance" required>
+            </div>
+            <div class="form-group">
+                <label for="ethnie">Ethnie :</label>
+                <input type="text" id="ethnie">
+            </div>
+            <div class="form-group">
+                <label for="nationalite">Nationalité :</label>
+                <input type="text" id="nationalite" required>
+            </div>
+            <div class="form-group">
+                <label for="lieuHabitation">Lieu d'Habitation :</label>
+                <input type="text" id="lieuHabitation" required>
+            </div>
+            <div class="form-group">
+                <label for="photo">Photo :</label>
+                <input type="file" id="photo" accept="image/*" required>
+            </div>
+            <button type="submit" class="btn-submit">Créer la Carte</button>
+        </form>
 
-    // Affichage des informations après soumission du formulaire
-    document.getElementById('registrationForm').addEventListener('submit', function(event) {
-      event.preventDefault();
-      const name = document.getElementById('name').value;
-      const dob = document.getElementById('dob').value;
-      const photo = document.getElementById('photo').files[0];
-      let resultHTML = `<h2>Informations enregistrées :</h2>`;
-      resultHTML += `<p><strong>Nom :</strong> ${name}</p>`;
-      resultHTML += `<p><strong>Date de naissance :</strong> ${dob}</p>`;
-      if (photo) {
-        resultHTML += `<p><strong>Photo :</strong></p><img src="${document.getElementById('preview').src}" alt="Photo">`;
-      }
-      document.getElementById('result').innerHTML = resultHTML;
-    });
-  </script>
+        <div id="carte-preview">
+            <h2>Carte d'Identité</h2>
+            <img id="carte-photo" src="" alt="Photo d'identité">
+            <div id="carte-info">
+                <p><strong>Nom :</strong> <span id="display-nom"></span></p>
+                <p><strong>Prénom :</strong> <span id="display-prenom"></span></p>
+                <p><strong>Date de Naissance :</strong> <span id="display-dateNaissance"></span></p>
+                <p><strong>Lieu de Naissance :</strong> <span id="display-lieuNaissance"></span></p>
+                <p><strong>Ethnie :</strong> <span id="display-ethnie"></span></p>
+                <p><strong>Nationalité :</strong> <span id="display-nationalite"></span></p>
+                <p><strong>Lieu d'Habitation :</strong> <span id="display-lieuHabitation"></span></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript
+        document.getElementById('form-carte').addEventListener('submit', function(event) {
+            event.preventDefault(); // Empêche le rechargement de la page
+
+            // Récupère les valeurs du formulaire
+            const nom = document.getElementById('nom').value;
+            const prenom = document.getElementById('prenom').value;
+            const dateNaissance = document.getElementById('dateNaissance').value;
+            const lieuNaissance = document.getElementById('lieuNaissance').value;
+            const ethnie = document.getElementById('ethnie').value;
+            const nationalite = document.getElementById('nationalite').value;
+            const lieuHabitation = document.getElementById('lieuHabitation').value;
+            const photoFile = document.getElementById('photo').files[0];
+
+            // Affiche les valeurs dans la carte
+            document.getElementById('display-nom').textContent = nom;
+            document.getElementById('display-prenom').textContent = prenom;
+            document.getElementById('display-dateNaissance').textContent = dateNaissance;
+            document.getElementById('display-lieuNaissance').textContent = lieuNaissance;
+            document.getElementById('display-ethnie').textContent = ethnie || 'Non spécifié';
+            document.getElementById('display-nationalite').textContent = nationalite;
+            document.getElementById('display-lieuHabitation').textContent = lieuHabitation;
+
+            // Gère l'affichage de la photo
+            if (photoFile) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('carte-photo').src = e.target.result;
+                    document.getElementById('carte-preview').style.display = 'block';
+                };
+                reader.readAsDataURL(photoFile);
+            }
+        });
+    </script>
 </body>
-</html>
+  </html>
+  
