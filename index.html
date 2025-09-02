@@ -1,28 +1,65 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mon Mini Site</title>
-    <style>
-        body {
-            font-family: sans-serif;
-            text-align: center;
-            padding-top: 50px;
-            background-color: #f0f0f0;
-            color: #333;
-        }
-        h1 {
-            color: #007BFF;
-        }
-        p {
-            font-size: 1.2em;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>Formulaire d'inscription</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 40px; }
+    .form-group { margin-bottom: 15px; }
+    label { display: block; margin-bottom: 5px; }
+    input[type="text"], input[type="date"] { width: 100%; padding: 8px; }
+    img { max-width: 200px; margin-top: 10px; display: block; }
+  </style>
 </head>
 <body>
-    <h1>Bienvenue sur Mon Mini Site</h1>
-    <p>Ce site a été créé avec TrebEdit et une touche d'IA !</p>
-    <p>Il est maintenant accessible depuis n'importe quel appareil.</p>
+  <h1>Enregistrement des informations</h1>
+  <form id="registrationForm">
+    <div class="form-group">
+      <label for="name">Nom :</label>
+      <input type="text" id="name" name="name" required>
+    </div>
+    <div class="form-group">
+      <label for="dob">Date de naissance :</label>
+      <input type="date" id="dob" name="dob" required>
+    </div>
+    <div class="form-group">
+      <label for="photo">Photo :</label>
+      <input type="file" id="photo" name="photo" accept="image/*">
+      <img id="preview" src="" alt="Aperçu de la photo" style="display:none;">
+    </div>
+    <button type="submit">Enregistrer</button>
+  </form>
+
+  <div id="result" style="margin-top:20px;"></div>
+
+  <script>
+    // Affiche l'aperçu de la photo
+    document.getElementById('photo').addEventListener('change', function(event) {
+      const preview = document.getElementById('preview');
+      const file = event.target.files[0];
+      if (file) {
+        preview.src = URL.createObjectURL(file);
+        preview.style.display = 'block';
+      } else {
+        preview.src = '';
+        preview.style.display = 'none';
+      }
+    });
+
+    // Affiche les infos soumises (simulation d'enregistrement)
+    document.getElementById('registrationForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+      const name = document.getElementById('name').value;
+      const dob = document.getElementById('dob').value;
+      const photo = document.getElementById('photo').files[0];
+      let resultHTML = `<h2>Informations enregistrées :</h2>`;
+      resultHTML += `<p>Nom : ${name}</p>`;
+      resultHTML += `<p>Date de naissance : ${dob}</p>`;
+      if (photo) {
+        resultHTML += `<p>Photo :</p><img src="${document.getElementById('preview').src}" alt="Photo" style="max-width:200px;">`;
+      }
+      document.getElementById('result').innerHTML = resultHTML;
+    });
+  </script>
 </body>
 </html>
