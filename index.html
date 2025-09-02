@@ -434,6 +434,7 @@
         const cartePreview = document.getElementById('carte-preview');
         const previewModal = document.getElementById('previewModal');
         const modalContentContainer = document.getElementById('modal-content-container');
+        const menu = document.getElementById('menu');
 
         function updateFormWithCardData(data) {
             document.getElementById('nom').value = data.nom;
@@ -511,7 +512,6 @@
             
             let cardElement;
             if (card) {
-                // Créer une version de la carte pour la modale
                 cardElement = document.createElement('div');
                 cardElement.id = 'carte-preview-modal';
                 cardElement.style.width = '85.60mm';
@@ -540,7 +540,6 @@
                     </div>
                 `;
             } else {
-                // Cloner la carte déjà affichée
                 cardElement = cartePreview.cloneNode(true);
                 cardElement.style.display = 'flex';
                 cardElement.style.boxShadow = 'none';
@@ -552,7 +551,8 @@
         }
 
         // Événements pour la modale
-        document.getElementById('close-btn').addEventListener('click', () => {
+        document.querySelector('.close-btn').addEventListener('click', () => {
             previewModal.style.display = 'none';
         });
-        window.addEventListener('cl
+        window.addEventListener('click', (event) => {
+            if (event.target === preview
