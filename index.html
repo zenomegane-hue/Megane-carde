@@ -4,36 +4,98 @@
   <meta charset="UTF-8">
   <title>Formulaire d'inscription</title>
   <style>
-    body { font-family: Arial, sans-serif; margin: 40px; }
-    .form-group { margin-bottom: 15px; }
-    label { display: block; margin-bottom: 5px; }
-    input[type="text"], input[type="date"] { width: 100%; padding: 8px; }
-    img { max-width: 200px; margin-top: 10px; display: block; }
+    body {
+      background: #f2f6fa;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      color: #222;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 500px;
+      margin: 40px auto;
+      background: #fff;
+      box-shadow: 0 0 8px rgba(0,0,0,0.07);
+      padding: 30px 40px 40px 40px;
+      border-radius: 8px;
+    }
+    h1 {
+      text-align: center;
+      color: #205081;
+      margin-bottom: 24px;
+    }
+    .form-group {
+      margin-bottom: 18px;
+    }
+    label {
+      font-weight: 500;
+      margin-bottom: 6px;
+      display: block;
+    }
+    input[type="text"], input[type="date"], input[type="file"] {
+      width: 100%;
+      padding: 9px;
+      border: 1px solid #b4cbe2;
+      border-radius: 4px;
+      margin-bottom: 4px;
+      box-sizing: border-box;
+    }
+    button {
+      display: block;
+      width: 100%;
+      padding: 11px 0;
+      background: #205081;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      font-size: 1.08em;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 12px;
+      transition: background 0.2s;
+    }
+    button:hover {
+      background: #3071c0;
+    }
+    img {
+      max-width: 180px;
+      margin-top: 8px;
+      border-radius: 5px;
+      box-shadow: 0 2px 8px rgba(32,80,129,0.15);
+    }
+    #result {
+      background: #edf3fa;
+      border-radius: 6px;
+      padding: 16px;
+      margin-top: 24px;
+      box-shadow: 0 0 4px rgba(32,80,129,0.07);
+    }
   </style>
 </head>
 <body>
-  <h1>Enregistrement des informations</h1>
-  <form id="registrationForm">
-    <div class="form-group">
-      <label for="name">Nom :</label>
-      <input type="text" id="name" name="name" required>
-    </div>
-    <div class="form-group">
-      <label for="dob">Date de naissance :</label>
-      <input type="date" id="dob" name="dob" required>
-    </div>
-    <div class="form-group">
-      <label for="photo">Photo :</label>
-      <input type="file" id="photo" name="photo" accept="image/*">
-      <img id="preview" src="" alt="Aperçu de la photo" style="display:none;">
-    </div>
-    <button type="submit">Enregistrer</button>
-  </form>
+  <div class="container">
+    <h1>Enregistrement des informations</h1>
+    <form id="registrationForm">
+      <div class="form-group">
+        <label for="name">Nom :</label>
+        <input type="text" id="name" name="name" required>
+      </div>
+      <div class="form-group">
+        <label for="dob">Date de naissance :</label>
+        <input type="date" id="dob" name="dob" required>
+      </div>
+      <div class="form-group">
+        <label for="photo">Photo :</label>
+        <input type="file" id="photo" name="photo" accept="image/*">
+        <img id="preview" src="" alt="Aperçu de la photo" style="display:none;">
+      </div>
+      <button type="submit">Enregistrer</button>
+    </form>
 
-  <div id="result" style="margin-top:20px;"></div>
-
+    <div id="result"></div>
+  </div>
   <script>
-    // Affiche l'aperçu de la photo
+    // Aperçu de la photo sélectionnée
     document.getElementById('photo').addEventListener('change', function(event) {
       const preview = document.getElementById('preview');
       const file = event.target.files[0];
@@ -46,17 +108,17 @@
       }
     });
 
-    // Affiche les infos soumises (simulation d'enregistrement)
+    // Affichage des informations après soumission du formulaire
     document.getElementById('registrationForm').addEventListener('submit', function(event) {
       event.preventDefault();
       const name = document.getElementById('name').value;
       const dob = document.getElementById('dob').value;
       const photo = document.getElementById('photo').files[0];
       let resultHTML = `<h2>Informations enregistrées :</h2>`;
-      resultHTML += `<p>Nom : ${name}</p>`;
-      resultHTML += `<p>Date de naissance : ${dob}</p>`;
+      resultHTML += `<p><strong>Nom :</strong> ${name}</p>`;
+      resultHTML += `<p><strong>Date de naissance :</strong> ${dob}</p>`;
       if (photo) {
-        resultHTML += `<p>Photo :</p><img src="${document.getElementById('preview').src}" alt="Photo" style="max-width:200px;">`;
+        resultHTML += `<p><strong>Photo :</strong></p><img src="${document.getElementById('preview').src}" alt="Photo">`;
       }
       document.getElementById('result').innerHTML = resultHTML;
     });
