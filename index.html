@@ -271,7 +271,7 @@
             flex-grow: 1;
             height: 40px;
             box-sizing: border-box;
-            min-width: 0; /* Permet au contenu de se réduire */
+            min-width: 0;
         }
         
         .qr-section {
@@ -318,10 +318,10 @@
             order: 2;
         }
         #logo-img {
-            order: 2; /* Pour que le logo soit à droite du slogan */
+            order: 2;
         }
         .slogan-text {
-            order: 1; /* Pour que le slogan soit à gauche du logo */
+            order: 1;
         }
 
         #carte-footer {
@@ -445,9 +445,26 @@
         }
 
         .saved-card .preview-btn {
-            top: 8px;
-            right: 8px;
-            font-size: 16px;
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.7);
+            border: none;
+            color: #555;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+        .saved-card .preview-btn:hover {
+            background-color: #007bff;
+            color: #fff;
         }
 
         /* Styles de la modale d'aperçu */
@@ -1149,7 +1166,7 @@
         });
 
         document.getElementById('form-carte').addEventListener('submit', function(event) {
-            event.preventDefault();
+            event.preventDefault(); // LA LIGNE CLÉ QUI EMPÊCHE LE RECHARGEMENT
 
             const formData = {
                 carteNom: document.getElementById('carteNom').value.trim(),
