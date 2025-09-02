@@ -223,14 +223,33 @@
             transition: color 0.5s ease;
         }
 
+        #carte-photo-container {
+            flex-shrink: 0;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 80px;
+        }
+
         #carte-photo {
             width: 60px;
             height: 80px;
             border: 2px solid #0056b3;
             border-radius: 6px;
             object-fit: cover;
-            flex-shrink: 0;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        
+        #carte-fonction {
+            font-size: 0.6em;
+            color: #004d80;
+            font-weight: bold;
+            margin-top: 5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 100%;
         }
 
         /* Styles des boutons de téléchargement */
@@ -489,7 +508,8 @@
         }
 
         .dark-theme #carte-info p,
-        .dark-theme #carte-info strong {
+        .dark-theme #carte-info strong,
+        .dark-theme #carte-fonction {
             color: #e0e0e0;
         }
 
@@ -583,6 +603,10 @@
                     <input type="email" id="email" required>
                 </div>
                 <div class="form-group">
+                    <label for="fonction">Fonction :</label>
+                    <input type="text" id="fonction">
+                </div>
+                <div class="form-group">
                     <label for="photo">Photo :</label>
                     <input type="file" id="photo" accept="image/*" required>
                 </div>
@@ -606,7 +630,10 @@
                         <p><strong>Tél. :</strong> <span id="display-numeroTelephone"></span></p>
                         <p><strong>Email :</strong> <span id="display-email"></span></p>
                     </div>
-                    <img id="carte-photo" src="" alt="Photo d'identité">
+                    <div id="carte-photo-container">
+                        <img id="carte-photo" src="" alt="Photo d'identité">
+                        <p id="carte-fonction"></p>
+                    </div>
                 </div>
             </div>
             
@@ -704,6 +731,7 @@
             document.getElementById('lieuHabitation').value = data.lieuHabitation;
             document.getElementById('numeroTelephone').value = data.numeroTelephone;
             document.getElementById('email').value = data.email;
+            document.getElementById('fonction').value = data.fonction;
             document.getElementById('carte-photo').src = data.photo;
 
             document.getElementById('display-nom').textContent = data.nom;
@@ -715,6 +743,7 @@
             document.getElementById('display-lieuHabitation').textContent = data.lieuHabitation;
             document.getElementById('display-numeroTelephone').textContent = data.numeroTelephone;
             document.getElementById('display-email').textContent = data.email;
+            document.getElementById('carte-fonction').textContent = data.fonction;
 
             cartePreview.style.display = 'flex';
             downloadButtons.style.display = 'flex';
@@ -788,7 +817,10 @@
                             <p style="margin: 1px 0;"><strong>Tél. :</strong> ${card.numeroTelephone}</p>
                             <p style="margin: 1px 0;"><strong>Email :</strong> ${card.email}</p>
                         </div>
-                        <img src="${card.photo}" style="width: 60px; height: 80px; border: 2px solid #0056b3; border-radius: 6px; object-fit: cover; flex-shrink: 0;">
+                        <div style="flex-shrink: 0; text-align: center; display: flex; flex-direction: column; align-items: center; width: 80px;">
+                            <img src="${card.photo}" style="width: 60px; height: 80px; border: 2px solid #0056b3; border-radius: 6px; object-fit: cover; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);">
+                            <p style="font-size: 0.6em; color: #004d80; font-weight: bold; margin-top: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%;">${card.fonction}</p>
+                        </div>
                     </div>
                 `;
             } else {
@@ -848,6 +880,7 @@
                 lieuHabitation: document.getElementById('lieuHabitation').value.trim(),
                 numeroTelephone: document.getElementById('numeroTelephone').value.trim(),
                 email: document.getElementById('email').value.trim(),
+                fonction: document.getElementById('fonction').value.trim(),
                 photoFile: document.getElementById('photo').files[0]
             };
             
@@ -869,6 +902,7 @@
             document.getElementById('display-lieuHabitation').textContent = formData.lieuHabitation;
             document.getElementById('display-numeroTelephone').textContent = formData.numeroTelephone;
             document.getElementById('display-email').textContent = formData.email;
+            document.getElementById('carte-fonction').textContent = formData.fonction;
 
             const reader = new FileReader();
             reader.onload = function(e) {
@@ -909,7 +943,7 @@
         
         document.getElementById('save-card').addEventListener('click', async function() {
             const data = {
-                nom: document.getElementById('nom').value, prenom: document.getElementById('prenom').value, dateNaissance: document.getElementById('dateNaissance').value, lieuNaissance: document.getElementById('lieuNaissance').value, ethnie: document.getElementById('ethnie').value, nationalite: document.getElementById('nationalite').value, lieuHabitation: document.getElementById('lieuHabitation').value, numeroTelephone: document.getElementById('numeroTelephone').value, email: document.getElementById('email').value, photo: document.getElementById('carte-photo').src
+                nom: document.getElementById('nom').value, prenom: document.getElementById('prenom').value, dateNaissance: document.getElementById('dateNaissance').value, lieuNaissance: document.getElementById('lieuNaissance').value, ethnie: document.getElementById('ethnie').value, nationalite: document.getElementById('nationalite').value, lieuHabitation: document.getElementById('lieuHabitation').value, numeroTelephone: document.getElementById('numeroTelephone').value, email: document.getElementById('email').value, fonction: document.getElementById('fonction').value, photo: document.getElementById('carte-photo').src
             };
             const uniqueId = `${data.nom}-${data.prenom}-${data.dateNaissance}`;
             const existingIndex = cardData.findIndex(card => `${card.nom}-${card.prenom}-${card.dateNaissance}` === uniqueId);
