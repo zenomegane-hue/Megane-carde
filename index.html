@@ -193,7 +193,6 @@
             margin: 0 auto;
         }
 
-        /* Le reste des styles de carte (card-header, card-content, etc.) est identique... */
         .card-preview .card-header { text-align: center; border-bottom: 1px solid rgba(0, 86, 179, 0.2); padding-bottom: 2px; margin-bottom: 3px; }
         .card-preview .card-header h2 { margin: 0; color: #0056b3; font-size: 0.9em; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; transition: color 0.5s ease; }
         .card-preview .card-content { display: flex; align-items: flex-start; justify-content: space-between; flex-grow: 1; }
@@ -291,6 +290,10 @@
         }
         .saved-card img { width: 55px; height: 70px; border-radius: 5px; float: right; margin-left: 10px; border: 1px solid #b3d4f4; }
         .saved-card p { font-size: 0.75em; margin: 2px 0; line-height: 1.3; color: #444; transition: color 0.5s ease; }
+        .preview-btn {
+            position: absolute; top: 8px; right: 8px; background-color: rgba(0, 0, 0, 0.5); color: #fff; border: none; border-radius: 50%; width: 30px; height: 30px; font-size: 16px; cursor: pointer; transition: background-color 0.3s ease;
+        }
+        .preview-btn:hover { background-color: #007bff; }
         
         /* Thème sombre */
         body.dark-theme { background-color: #121212; color: #e0e0e0; }
@@ -615,8 +618,6 @@
             if (currentUser) {
                 authSection.style.display = 'none';
                 cardApp.style.display = 'block';
-                // Stockage des cartes lié à l'utilisateur
-                window.cardData = JSON.parse(localStorage.getItem(`cards_${currentUser}`)) || [];
             } else {
                 authSection.style.display = 'block';
                 cardApp.style.display = 'none';
@@ -735,14 +736,13 @@
                     <p><strong>Prénom :</strong> ${card.prenom}</p>
                     <button class="preview-btn gallery-preview-btn">👁️</button>
                 `;
-                newCard.addEventListener('click', (e) => {
-                    if (!e.target.classList.contains('gallery-preview-btn')) {
-                        updateFormWithCardData(card);
-                        showForm();
-                    }
-                });
-                newCard.querySelector('.gallery-preview-btn').addEventListener('click', () => {
+                newCard.querySelector('.gallery-preview-btn').addEventListener('click', (e) => {
+                    e.stopPropagation();
                     showPreview(index);
+                });
+                newCard.addEventListener('click', (e) => {
+                    updateFormWithCardData(card);
+                    showForm();
                 });
                 galleryContainer.appendChild(newCard);
             });
@@ -836,12 +836,14 @@
         }
 
         function showPreview(index) {
-            currentCardIndex = index;
             const currentUser = localStorage.getItem('currentUser');
             const userCards = JSON.parse(localStorage.getItem(`cards_${currentUser}`)) || [];
-            updateModalContent(userCards[currentCardIndex]);
-            updateNavButtons();
-            previewModal.style.display = 'flex';
+            if (index >= 0 && index < userCards.length) {
+                currentCardIndex = index;
+                updateModalContent(userCards[currentCardIndex]);
+                updateNavButtons();
+                previewModal.style.display = 'flex';
+            }
         }
 
         function updateNavButtons() {
@@ -1049,8 +1051,12 @@
 
         document.getElementById('save-card').addEventListener('click', async function() {
             const currentUser = localStorage.getItem('currentUser');
+            if (!currentUser) {
+                alert("Vous devez être connecté pour enregistrer une carte.");
+                return;
+            }
             let userCards = JSON.parse(localStorage.getItem(`cards_${currentUser}`)) || [];
-
+            
             const data = {
                 carteNom: document.getElementById('carteNom').value.trim() || 'Mégane-Carde',
                 nom: document.getElementById('nom').value, 
@@ -1069,6 +1075,12 @@
                 photo: document.getElementById('carte-photo').src,
                 logo: document.getElementById('logo-img').src
             };
+            
+            if (!data.nom || !data.prenom || !data.dateNaissance) {
+                alert("Veuillez d'abord créer une carte en remplissant les champs requis.");
+                return;
+            }
+
             const uniqueId = `${data.nom}-${data.prenom}-${data.dateNaissance}`;
             const existingIndex = userCards.findIndex(card => `${card.nom}-${card.prenom}-${card.dateNaissance}` === uniqueId);
             
