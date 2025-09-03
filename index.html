@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mégane-Carde</title>
+    <title>Création de Carte Mégane-Carde</title>
     <style>
-        /* Styles CSS pour toutes les sections */
+        /* CSS */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #e0f2f7;
@@ -44,14 +44,6 @@
             letter-spacing: 1px;
             transition: color 0.5s ease;
         }
-        
-        h2 {
-            color: #2c3e50;
-            text-align: center;
-            margin-top: 30px;
-            margin-bottom: 20px;
-            font-size: 1.5em;
-        }
 
         .form-group {
             margin-bottom: 20px;
@@ -69,8 +61,7 @@
         input[type="date"],
         input[type="tel"],
         input[type="email"],
-        input[type="file"],
-        input[type="password"] {
+        input[type="file"] {
             width: 100%;
             padding: 12px;
             border: 1px solid #c0d9e6;
@@ -82,12 +73,19 @@
             color: #333;
         }
 
-        input:focus {
+        input[type="text"]:focus,
+        input[type="date"]:focus,
+        input[type="tel"]:focus,
+        input[type="email"]:focus {
             border-color: #007bff;
             box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
             outline: none;
         }
-        
+
+        input[type="file"] {
+            padding: 10px;
+        }
+
         .btn-submit {
             width: 100%;
             padding: 15px;
@@ -104,26 +102,6 @@
         .btn-submit:hover {
             background-color: #0056b3;
             transform: translateY(-2px);
-        }
-        
-        .toggle-form {
-            margin-top: 20px;
-            font-size: 14px;
-            color: #555;
-            cursor: pointer;
-            text-align: center;
-        }
-
-        .toggle-form:hover {
-            text-decoration: underline;
-            color: #007bff;
-        }
-        
-        .error-message {
-            color: #ff3860;
-            margin-bottom: 15px;
-            font-weight: bold;
-            text-align: center;
         }
 
         /* Menu de paramètres */
@@ -173,8 +151,17 @@
             background-color: #f0f0f0;
             color: #007bff;
         }
+        
+        /* Conteneur des prévisualisations (recto et verso) */
+        #card-previews-container {
+            margin-top: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
 
-        /* Styles de la carte */
+        /* Styles pour la carte d'identité SPÉCIFIQUE */
         .card-preview {
             background: linear-gradient(135deg, #e0f7fa 0%, #bbdefb 100%);
             border: 2px solid #0056b3;
@@ -190,40 +177,183 @@
             justify-content: space-between;
             overflow: hidden;
             transition: transform 0.3s ease-in-out, background 0.5s ease;
-            margin: 0 auto;
         }
 
-        .card-preview .card-header { text-align: center; border-bottom: 1px solid rgba(0, 86, 179, 0.2); padding-bottom: 2px; margin-bottom: 3px; }
-        .card-preview .card-header h2 { margin: 0; color: #0056b3; font-size: 0.9em; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; transition: color 0.5s ease; }
-        .card-preview .card-content { display: flex; align-items: flex-start; justify-content: space-between; flex-grow: 1; }
-        .card-preview .card-info { flex-grow: 1; padding-right: 5px; font-size: 0.5em; line-height: 1.1; transition: color 0.5s ease; }
-        .card-preview .card-info p { color: #333; text-align: left; margin: 0; transition: color 0.5s ease; }
-        .card-preview .card-info strong { display: inline-block; width: 48px; color: #004d80; font-weight: 600; transition: color 0.5s ease; }
-        .card-preview .card-photo-container { flex-shrink: 0; text-align: center; display: flex; flex-direction: column; align-items: center; width: 58px; }
-        .card-preview .card-photo { width: 55px; height: 70px; border: 2px solid #0056b3; border-radius: 4px; object-fit: cover; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); }
-        .card-preview .card-fonction { font-size: 0.55em; color: #004d80; font-weight: bold; margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; }
-        .card-preview .qr-and-logo-container { display: flex; justify-content: space-between; align-items: center; width: 100%; margin: 5px 0; gap: 5px; }
-        .card-preview .qr-section, .card-preview .logo-section { display: flex; align-items: center; gap: 5px; border: 1px solid #0056b3; padding: 2px; border-radius: 4px; flex-grow: 1; height: 40px; box-sizing: border-box; min-width: 0; }
-        .card-preview .qr-section { justify-content: flex-start; padding-left: 5px; }
-        .card-preview .qr-section .qr-description { font-size: 0.5em; color: #333; text-align: left; flex-grow: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .card-preview .logo-section { justify-content: flex-end; padding-right: 5px; }
-        .card-preview .logo-section .slogan-text { font-size: 0.5em; color: #333; text-align: right; flex-grow: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .card-preview #qr-code, .card-preview #logo-img { width: 35px; height: 35px; object-fit: contain; flex-shrink: 0; }
-        .card-preview #qr-code { order: 1; }
-        .card-preview .qr-description { order: 2; }
-        .card-preview #logo-img { order: 2; }
-        .card-preview .slogan-text { order: 1; }
-        .card-preview .card-footer { background-color: #007bff; color: #fff; text-align: center; padding: 3px 0; font-size: 0.6em; font-weight: bold; border-radius: 0 0 10px 10px; margin: 5px -8px -5px -8px; transition: background-color 0.5s ease, color 0.5s ease; }
+        .card-preview:hover {
+            transform: translateY(-5px) scale(1.02);
+        }
+
+        .card-preview .card-header {
+            text-align: center;
+            border-bottom: 1px solid rgba(0, 86, 179, 0.2);
+            padding-bottom: 2px;
+            margin-bottom: 3px;
+        }
+
+        .card-preview .card-header h2 {
+            margin: 0;
+            color: #0056b3;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 700;
+            transition: color 0.5s ease;
+        }
+
+        .card-preview .card-content {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            flex-grow: 1;
+        }
+
+        .card-preview .card-info {
+            flex-grow: 1;
+            padding-right: 5px;
+            font-size: 0.5em;
+            line-height: 1.1;
+            transition: color 0.5s ease;
+        }
+        
+        .card-preview .card-info p {
+            color: #333;
+            text-align: left;
+            margin: 0;
+            transition: color 0.5s ease;
+        }
+
+        .card-preview .card-info strong {
+            display: inline-block;
+            width: 48px;
+            color: #004d80;
+            font-weight: 600;
+            transition: color 0.5s ease;
+        }
+
+        .card-preview .card-photo-container {
+            flex-shrink: 0;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 58px;
+        }
+
+        .card-preview .card-photo {
+            width: 55px;
+            height: 70px;
+            border: 2px solid #0056b3;
+            border-radius: 4px;
+            object-fit: cover;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        
+        .card-preview .card-fonction {
+            font-size: 0.55em;
+            color: #004d80;
+            font-weight: bold;
+            margin-top: 3px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 100%;
+        }
+
+        /* Nouveaux styles pour le QR code et le logo */
+        .card-preview .qr-and-logo-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            margin: 5px 0;
+            gap: 5px;
+        }
+
+        .card-preview .qr-section, .card-preview .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            border: 1px solid #0056b3;
+            padding: 2px;
+            border-radius: 4px;
+            flex-grow: 1;
+            height: 40px;
+            box-sizing: border-box;
+            min-width: 0;
+        }
+        
+        .card-preview .qr-section {
+            justify-content: flex-start;
+            padding-left: 5px;
+        }
+        
+        .card-preview .qr-section .qr-description {
+            font-size: 0.5em;
+            color: #333;
+            text-align: left;
+            flex-grow: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .card-preview .logo-section {
+            justify-content: flex-end;
+            padding-right: 5px;
+        }
+        
+        .card-preview .logo-section .slogan-text {
+            font-size: 0.5em;
+            color: #333;
+            text-align: right;
+            flex-grow: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .card-preview #qr-code, .card-preview #logo-img {
+            width: 35px;
+            height: 35px;
+            object-fit: contain;
+            flex-shrink: 0;
+        }
+        
+        .card-preview #qr-code {
+            order: 1;
+        }
+        .card-preview .qr-description {
+            order: 2;
+        }
+        .card-preview #logo-img {
+            order: 2;
+        }
+        .card-preview .slogan-text {
+            order: 1;
+        }
+
+        .card-preview .card-footer {
+            background-color: #007bff;
+            color: #fff;
+            text-align: center;
+            padding: 3px 0;
+            font-size: 0.6em;
+            font-weight: bold;
+            border-radius: 0 0 10px 10px;
+            margin: 5px -8px -5px -8px;
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
         
         /* Styles pour le verso de la carte */
         #verso-preview {
             background: linear-gradient(135deg, #b3e5fc, #81d4fa, #4fc3f7);
             filter: blur(0.5px);
-            display: flex;
+            display: none;
             flex-direction: column;
             justify-content: center;
             align-items: center;
         }
+        
         #verso-preview h3 {
             font-size: 1.8em;
             font-weight: bold;
@@ -233,6 +363,7 @@
             margin: 0;
             padding: 0;
         }
+        
         #verso-preview p {
             font-size: 0.7em;
             color: #333;
@@ -240,300 +371,577 @@
             text-align: center;
         }
         
-        .download-buttons, .preview-toggle-buttons {
-            display: flex; justify-content: center; gap: 15px; margin-top: 30px; width: 100%;
+        .download-buttons,
+        .preview-toggle-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+            width: 100%;
         }
+
         .download-btn {
-            padding: 10px 20px; border: none; border-radius: 6px; font-size: 15px; cursor: pointer; transition: background-color 0.3s ease, transform 0.2s ease; font-weight: 600; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            font-size: 15px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            font-weight: 600;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
-        .download-btn:hover { background-color: #0056b3; transform: translateY(-2px); }
-        .download-btn.png { background-color: #28a745; color: #fff; }
-        .download-btn.png:hover { background-color: #218838; }
-        .download-btn.pdf { background-color: #dc3545; color: #fff; }
-        .download-btn.pdf:hover { background-color: #c82333; }
-        .download-btn.download-all { background-color: #6c757d; color: #fff; }
-        .download-btn.download-all:hover { background-color: #5a6268; }
-        .btn-save-card { background-color: #673ab7; color: #fff; }
-        .btn-save-card:hover { background-color: #512da8; }
-        .btn-toggle-view { padding: 10px 20px; border: none; border-radius: 6px; font-size: 15px; cursor: pointer; background-color: #17a2b8; color: #fff; font-weight: 600; transition: background-color 0.3s ease; }
-        .btn-toggle-view:hover { background-color: #138496; }
+
+        .download-btn:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+        }
+
+        .download-btn.png {
+            background-color: #28a745;
+            color: #fff;
+        }
+
+        .download-btn.png:hover {
+            background-color: #218838;
+        }
+
+        .download-btn.pdf {
+            background-color: #dc3545;
+            color: #fff;
+        }
+
+        .download-btn.pdf:hover {
+            background-color: #c82333;
+        }
+        
+        .download-btn.download-all {
+            background-color: #6c757d;
+            color: #fff;
+        }
+        .download-btn.download-all:hover {
+            background-color: #5a6268;
+        }
+
+        .btn-save-card {
+            background-color: #673ab7;
+            color: #fff;
+        }
+        .btn-save-card:hover {
+            background-color: #512da8;
+        }
+        
+        .btn-toggle-view {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            font-size: 15px;
+            cursor: pointer;
+            background-color: #17a2b8;
+            color: #fff;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+        }
+        .btn-toggle-view:hover {
+            background-color: #138496;
+        }
+
+        #gallery {
+            margin-top: 40px;
+            border-top: 2px solid #e0e0e0;
+            padding-top: 30px;
+            text-align: center;
+            display: none;
+            transition: border-color 0.5s ease;
+        }
+        
+        #gallery h2 {
+            color: #2c3e50;
+            margin-bottom: 25px;
+            font-size: 1.8em;
+            transition: color 0.5s ease;
+        }
+
+        #gallery-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+            justify-content: center;
+        }
+
+        .saved-card {
+            background: linear-gradient(135deg, #f0f8ff 0%, #e0e7ee 100%);
+            border: 1px solid #a7d9ed;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            padding: 12px;
+            width: 160px;
+            text-align: left;
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.5s ease;
+        }
+
+        .saved-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.12);
+        }
+
+        .saved-card img {
+            width: 55px;
+            height: 70px;
+            border-radius: 5px;
+            float: right;
+            margin-left: 10px;
+            border: 1px solid #b3d4f4;
+        }
+
+        .saved-card p {
+            font-size: 0.75em;
+            margin: 2px 0;
+            line-height: 1.3;
+            color: #444;
+            transition: color 0.5s ease;
+        }
+
+        .saved-card .preview-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.7);
+            border: none;
+            color: #555;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+        .saved-card .preview-btn:hover {
+            background-color: #007bff;
+            color: #fff;
+        }
 
         /* Styles de la modale d'aperçu */
         .modal {
-            position: fixed; z-index: 100; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.6); backdrop-filter: blur(8px); display: none; justify-content: center; align-items: center;
-        }
-        .modal-content {
-            border: 3px solid #0056b3; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); background: linear-gradient(135deg, #e0f7fa 0%, #bbdefb 100%); border-radius: 12px; padding: 5px 8px; position: relative; transform: scale(1.1); transition: transform 0.3s ease-out; width: 85.60mm; height: 53.98mm; box-sizing: border-box; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between;
-        }
-        .modal.show .modal-content { transform: scale(1); }
-        .close-btn {
-            position: absolute; top: 10px; right: 20px; color: #fff; font-size: 40px; font-weight: bold; text-shadow: 0 0 5px rgba(0,0,0,0.5); cursor: pointer;
-        }
-        .close-btn:hover, .close-btn:focus { color: #ff6b6b; text-decoration: none; cursor: pointer; }
-        .nav-btn {
-            position: absolute; top: 50%; transform: translateY(-50%); font-size: 3em; color: #fff; background: rgba(0, 0, 0, 0.3); border: none; cursor: pointer; padding: 0 15px; border-radius: 5px; z-index: 101; transition: background-color 0.2s ease, color 0.2s ease; user-select: none;
-        }
-        .nav-btn:hover { background: rgba(0, 0, 0, 0.5); }
-        .nav-btn:disabled { color: #777; cursor: not-allowed; background: rgba(0, 0, 0, 0.1); }
-        #prev-btn { left: 20px; }
-        #next-btn { right: 20px; }
-        
-        /* Galerie */
-        #gallery {
-            margin-top: 40px; border-top: 2px solid #e0e0e0; padding-top: 30px; text-align: center;
-        }
-        #gallery-container {
-            display: flex; flex-wrap: wrap; gap: 25px; justify-content: center;
-        }
-        .saved-card {
-            background: linear-gradient(135deg, #f0f8ff 0%, #e0e7ee 100%); border: 1px solid #a7d9ed; border-radius: 10px; box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08); padding: 12px; width: 160px; text-align: left; position: relative; cursor: pointer; transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.5s ease;
-        }
-        .saved-card img { width: 55px; height: 70px; border-radius: 5px; float: right; margin-left: 10px; border: 1px solid #b3d4f4; }
-        .saved-card p { font-size: 0.75em; margin: 2px 0; line-height: 1.3; color: #444; transition: color 0.5s ease; }
-        .preview-btn {
-            position: absolute; top: 8px; right: 8px; background-color: rgba(0, 0, 0, 0.5); color: #fff; border: none; border-radius: 50%; width: 30px; height: 30px; font-size: 16px; cursor: pointer; transition: background-color 0.3s ease;
-        }
-        .preview-btn:hover { background-color: #007bff; }
-        
-        /* Thème sombre */
-        body.dark-theme { background-color: #121212; color: #e0e0e0; }
-        .dark-theme .container { background-color: #1e1e1e; box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5); }
-        .dark-theme h1, .dark-theme label, .dark-theme h2 { color: #e0e0e0; }
-        .dark-theme input { background-color: #2c2c2c; border-color: #3e3e3e; color: #e0e0e0; }
-        .dark-theme input:focus { border-color: #8ab4f8; box-shadow: 0 0 0 3px rgba(138, 180, 248, 0.25); }
-        .dark-theme .menu-btn { color: #ccc; }
-        .dark-theme .menu-btn:hover { color: #8ab4f8; }
-        .dark-theme #menu { background-color: #2c2c2c; border-color: #3e3e3e; }
-        .dark-theme #menu button { color: #e0e0e0; }
-        .dark-theme #menu button:hover { background-color: #444; color: #8ab4f8; }
-        .dark-theme .card-preview { background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); border-color: #0d47a1; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4); }
-        .dark-theme .card-header h2 { color: #fff; border-bottom: 1px solid rgba(255, 255, 255, 0.2); }
-        .dark-theme .card-info p, .dark-theme .card-info strong, .dark-theme .card-fonction { color: #e0e0e0; }
-        .dark-theme .qr-section, .dark-theme .logo-section { border-color: #e0e0e0; }
-        .dark-theme .qr-description, .dark-theme .slogan-text { color: #e0e0e0; }
-        .dark-theme .card-photo { border-color: #e0e0e0; }
-        .dark-theme .card-footer { background-color: #0d47a1; color: #e0e0e0; }
-        .dark-theme #verso-preview { background: linear-gradient(135deg, #1e3c72, #2a5298, #0d47a1); }
-        .dark-theme #verso-preview h3 { color: #8ab4f8; text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.1); }
-        .dark-theme #verso-preview p { color: #e0e0e0; }
-        .dark-theme .saved-card { background: #2a2a2a; border-color: #444; box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3); }
-        .dark-theme .saved-card img { border-color: #444; }
-        .dark-theme .saved-card p { color: #e0e0e0; }
-        .dark-theme .preview-btn { background: rgba(44, 44, 44, 0.7); color: #e0e0e0; box-shadow: 0 1px 3px rgba(0,0,0,0.5); }
-        .dark-theme .preview-btn:hover { background-color: #8ab4f8; color: #1e1e1e; }
-        .dark-theme .modal-content { background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); border-color: #0d47a1; }
-        .dark-theme .close-btn { color: #f0f0f0; }
-        .dark-theme .nav-btn { background: rgba(255, 255, 255, 0.3); color: #000; }
-        .dark-theme .nav-btn:hover { background: rgba(255, 255, 255, 0.5); }
-        .dark-theme .nav-btn:disabled { background: rgba(255, 255, 255, 0.1); color: #999; }
-        
-        /* Styles spécifiques pour les pages de connexion/inscription */
-        #auth-section {
+            position: fixed;
+            z-index: 100;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
             display: none;
-            text-align: center;
-        }
-        #card-app {
-            display: none;
+            justify-content: center;
+            align-items: center;
         }
 
+        .modal-content {
+            border: 3px solid #0056b3;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            background: linear-gradient(135deg, #e0f7fa 0%, #bbdefb 100%);
+            border-radius: 12px;
+            padding: 5px 8px;
+            position: relative;
+            transform: scale(1.1);
+            transition: transform 0.3s ease-out;
+            width: 85.60mm; 
+            height: 53.98mm; 
+            box-sizing: border-box; 
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        
+        .modal.show .modal-content {
+            transform: scale(1);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            color: #fff;
+            font-size: 40px;
+            font-weight: bold;
+            text-shadow: 0 0 5px rgba(0,0,0,0.5);
+            cursor: pointer;
+        }
+        .close-btn:hover,
+        .close-btn:focus {
+            color: #ff6b6b;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .preview-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.7);
+            border: none;
+            color: #555;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+        .preview-btn:hover {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        .nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 3em;
+            color: #fff;
+            background: rgba(0, 0, 0, 0.3);
+            border: none;
+            cursor: pointer;
+            padding: 0 15px;
+            border-radius: 5px;
+            z-index: 101;
+            transition: background-color 0.2s ease, color 0.2s ease;
+            user-select: none;
+        }
+
+        .nav-btn:hover {
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .nav-btn:disabled {
+            color: #777;
+            cursor: not-allowed;
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        #prev-btn {
+            left: 20px;
+        }
+
+        #next-btn {
+            right: 20px;
+        }
+
+        /* Thème sombre */
+        body.dark-theme {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+        
+        .dark-theme .container {
+            background-color: #1e1e1e;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+        }
+        
+        .dark-theme h1,
+        .dark-theme label,
+        .dark-theme h2 {
+            color: #e0e0e0;
+        }
+        
+        .dark-theme input[type="text"],
+        .dark-theme input[type="date"],
+        .dark-theme input[type="tel"],
+        .dark-theme input[type="email"],
+        .dark-theme input[type="file"] {
+            background-color: #2c2c2c;
+            border-color: #3e3e3e;
+            color: #e0e0e0;
+        }
+
+        .dark-theme input[type="text"]:focus,
+        .dark-theme input[type="date"]:focus,
+        .dark-theme input[type="tel"]:focus,
+        .dark-theme input[type="email"]:focus {
+            border-color: #8ab4f8;
+            box-shadow: 0 0 0 3px rgba(138, 180, 248, 0.25);
+        }
+        
+        .dark-theme .menu-btn {
+            color: #ccc;
+        }
+        .dark-theme .menu-btn:hover {
+            color: #8ab4f8;
+        }
+
+        .dark-theme #menu {
+            background-color: #2c2c2c;
+            border-color: #3e3e3e;
+        }
+
+        .dark-theme #menu button {
+            color: #e0e0e0;
+        }
+        .dark-theme #menu button:hover {
+            background-color: #444;
+            color: #8ab4f8;
+        }
+        
+        .dark-theme .card-preview {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            border-color: #0d47a1;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+        }
+        
+        .dark-theme .card-header h2 {
+            color: #fff;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .dark-theme .card-info p,
+        .dark-theme .card-info strong,
+        .dark-theme .card-fonction {
+            color: #e0e0e0;
+        }
+        
+        .dark-theme .qr-section, .dark-theme .logo-section {
+            border-color: #e0e0e0;
+        }
+        
+        .dark-theme #qr-code, .dark-theme #logo-img {
+            filter: invert(1) hue-rotate(180deg);
+        }
+
+        .dark-theme .qr-description, .dark-theme .slogan-text {
+            color: #e0e0e0;
+        }
+
+        .dark-theme .card-photo {
+            border-color: #e0e0e0;
+        }
+
+        .dark-theme .card-footer {
+            background-color: #0d47a1;
+            color: #e0e0e0;
+        }
+        
+        .dark-theme #verso-preview {
+            background: linear-gradient(135deg, #1e3c72, #2a5298, #0d47a1);
+        }
+        
+        .dark-theme #verso-preview h3 {
+            color: #8ab4f8;
+            text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.1);
+        }
+        
+        .dark-theme #verso-preview p {
+            color: #e0e0e0;
+        }
+
+        .dark-theme .saved-card {
+            background: #2a2a2a;
+            border-color: #444;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .dark-theme .saved-card img {
+            border-color: #444;
+        }
+        
+        .dark-theme .saved-card p {
+            color: #e0e0e0;
+        }
+
+        .dark-theme .preview-btn {
+            background: rgba(44, 44, 44, 0.7);
+            color: #e0e0e0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+        }
+        .dark-theme .preview-btn:hover {
+            background-color: #8ab4f8;
+            color: #1e1e1e;
+        }
+        
+        .dark-theme .modal-content {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            border-color: #0d47a1;
+        }
+
+        .dark-theme .close-btn {
+            color: #f0f0f0;
+        }
+
+        .dark-theme .nav-btn {
+            background: rgba(255, 255, 255, 0.3);
+            color: #000;
+        }
+        .dark-theme .nav-btn:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
+        .dark-theme .nav-btn:disabled {
+            background: rgba(255, 255, 255, 0.1);
+            color: #999;
+        }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
 </head>
 <body>
+
     <div class="container">
-        <div id="auth-section">
-            <h1>Bienvenue sur Mégane-Carde</h1>
-            
-            <div id="login-form">
-                <h2>Connexion</h2>
-                <form id="form-login">
-                    <div class="form-group">
-                        <label for="login-username">Nom d'utilisateur</label>
-                        <input type="text" id="login-username" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="login-password">Mot de passe</label>
-                        <input type="password" id="login-password" required>
-                    </div>
-                    <p id="error-message" class="error-message"></p>
-                    <button type="submit" class="btn-submit">Se connecter</button>
-                </form>
-                <p class="toggle-form" id="show-signup">Pas de compte ? S'inscrire</p>
-            </div>
-            
-            <div id="signup-form" style="display: none;">
-                <h2>Inscription</h2>
-                <form id="form-signup">
-                    <div class="form-group">
-                        <label for="signup-username">Nom d'utilisateur</label>
-                        <input type="text" id="signup-username" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="signup-password">Mot de passe</label>
-                        <input type="password" id="signup-password" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="signup-confirm-password">Confirmer le mot de passe</label>
-                        <input type="password" id="signup-confirm-password" required>
-                    </div>
-                    <p id="error-message-signup" class="error-message"></p>
-                    <button type="submit" class="btn-submit">S'inscrire</button>
-                </form>
-                <p class="toggle-form" id="show-login">Déjà un compte ? Se connecter</p>
-            </div>
+        <h1>Création de Carte Mégane-Carde</h1>
+        <button class="menu-btn" id="menu-toggle-btn">&#9776;</button>
+        <div id="menu">
+            <button id="show-home">Accueil</button>
+            <button id="show-gallery">Bibliothèque</button>
+            <button id="theme-toggle">Thème</button>
         </div>
 
-        <div id="card-app">
-            <h1>Création de Carte Mégane-Carde</h1>
-            <button class="menu-btn" id="menu-toggle-btn">&#9776;</button>
-            <div id="menu">
-                <button id="show-home">Créer une carte</button>
-                <button id="show-gallery">Bibliothèque</button>
-                <button id="theme-toggle">Thème</button>
-                <button id="logout-btn">Se déconnecter</button>
-            </div>
-
-            <div id="main-content">
-                <form id="form-carte">
-                    <div class="form-group">
-                        <label for="carteNom">Nom de la Carte :</label>
-                        <input type="text" id="carteNom" placeholder="Nom par défaut : Mégane-Carde">
-                    </div>
-                    <div class="form-group">
-                        <label for="nom">Nom :</label>
-                        <input type="text" id="nom" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="prenom">Prénom :</label>
-                        <input type="text" id="prenom" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="dateNaissance">Date de Naissance :</label>
-                        <input type="date" id="dateNaissance" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="lieuNaissance">Lieu de Naissance :</label>
-                        <input type="text" id="lieuNaissance" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="ethnie">Ethnie :</label>
-                        <input type="text" id="ethnie">
-                    </div>
-                    <div class="form-group">
-                        <label for="nationalite">Nationalité :</label>
-                        <input type="text" id="nationalite" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="lieuHabitation">Lieu d'Habitation :</label>
-                        <input type="text" id="lieuHabitation" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="numeroTelephone">Numéro de Téléphone :</label>
-                        <input type="tel" id="numeroTelephone" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="email">Email :</label>
-                        <input type="email" id="email" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="fonction">Fonction :</label>
-                        <input type="text" id="fonction">
-                    </div>
-                    <div class="form-group">
-                        <label for="slogan">Slogan (optionnel) :</label>
-                        <input type="text" id="slogan" maxlength="25">
-                    </div>
-                    <div class="form-group">
-                        <label for="photo">Photo :</label>
-                        <input type="file" id="photo" accept="image/*" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="logo">Logo (optionnel) :</label>
-                        <input type="file" id="logo" accept="image/*">
-                    </div>
-                    
-                    <hr style="margin: 30px 0;">
-                    
-                    <h2>Informations pour le Verso</h2>
-                    <div class="form-group">
-                        <label for="versoSlogan">Slogan du verso :</label>
-                        <input type="text" id="versoSlogan" value="By Mégane" readonly>
-                    </div>
-                    <div class="form-group">
-                        <label for="versoVersion">Numéro de version :</label>
-                        <input type="text" id="versoVersion" placeholder="Ex: V1.0">
-                    </div>
-                    <div class="form-group">
-                        <label for="versoWebsite">Site web :</label>
-                        <input type="text" id="versoWebsite" placeholder="Ex: www.megane.com">
-                    </div>
-
-                    <button type="submit" class="btn-submit">Créer la Carte</button>
-                </form>
-
-                <div id="card-previews-container">
-                    <div id="recto-preview" class="card-preview" style="display: none;">
-                        <div class="card-header">
-                            <h2 id="display-carte-nom">Mégane-Carde</h2>
-                        </div>
-                        <div class="card-content">
-                            <div class="card-info">
-                                <p><strong>Nom :</strong> <span id="display-nom"></span></p>
-                                <p><strong>Prénom :</strong> <span id="display-prenom"></span></p>
-                                <p><strong>Né(e) le :</strong> <span id="display-dateNaissance"></span></p>
-                                <p><strong>à :</strong> <span id="display-lieuNaissance"></span></p>
-                                <p><strong>Ethnie :</strong> <span id="display-ethnie"></span></p>
-                                <p><strong>Nationalité :</strong> <span id="display-nationalite"></span></p>
-                                <p><strong>Résidence :</strong> <span id="display-lieuHabitation"></span></p>
-                                <p><strong>Tél. :</strong> <span id="display-numeroTelephone"></span></p>
-                                <p><strong>Email :</strong> <span id="display-email"></span></p>
-                            </div>
-                            <div class="card-photo-container">
-                                <img id="carte-photo" src="" alt="Photo d'identité">
-                                <p id="carte-fonction"></p>
-                            </div>
-                        </div>
-                        <div class="qr-and-logo-container">
-                            <div class="qr-section">
-                                <div id="qr-code"></div>
-                                <span class="qr-description">Scannez ce QR Code</span>
-                            </div>
-                            <div class="logo-section">
-                                <span id="slogan-text" class="slogan-text"></span>
-                                <img id="logo-img" src="" alt="Logo">
-                            </div>
-                        </div>
-                        <div class="card-footer">
-                            <span>MA CARTE COMMUNAUTAIRE</span>
-                        </div>
-                    </div>
-
-                    <div id="verso-preview" class="card-preview" style="display: none;">
-                        <h3>By Mégane</h3>
-                        <p id="verso-version-display"></p>
-                        <p id="verso-website-display"></p>
-                    </div>
+        <div id="main-content">
+            <form id="form-carte">
+                <div class="form-group">
+                    <label for="carteNom">Nom de la Carte :</label>
+                    <input type="text" id="carteNom" placeholder="Nom par défaut : Mégane-Carde">
+                </div>
+                <div class="form-group">
+                    <label for="nom">Nom :</label>
+                    <input type="text" id="nom" required>
+                </div>
+                <div class="form-group">
+                    <label for="prenom">Prénom :</label>
+                    <input type="text" id="prenom" required>
+                </div>
+                <div class="form-group">
+                    <label for="dateNaissance">Date de Naissance :</label>
+                    <input type="date" id="dateNaissance" required>
+                </div>
+                <div class="form-group">
+                    <label for="lieuNaissance">Lieu de Naissance :</label>
+                    <input type="text" id="lieuNaissance" required>
+                </div>
+                <div class="form-group">
+                    <label for="ethnie">Ethnie :</label>
+                    <input type="text" id="ethnie">
+                </div>
+                <div class="form-group">
+                    <label for="nationalite">Nationalité :</label>
+                    <input type="text" id="nationalite" required>
+                </div>
+                <div class="form-group">
+                    <label for="lieuHabitation">Lieu d'Habitation :</label>
+                    <input type="text" id="lieuHabitation" required>
+                </div>
+                <div class="form-group">
+                    <label for="numeroTelephone">Numéro de Téléphone :</label>
+                    <input type="tel" id="numeroTelephone" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email :</label>
+                    <input type="email" id="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="fonction">Fonction :</label>
+                    <input type="text" id="fonction">
+                </div>
+                <div class="form-group">
+                    <label for="slogan">Slogan (optionnel) :</label>
+                    <input type="text" id="slogan" maxlength="25">
+                </div>
+                <div class="form-group">
+                    <label for="photo">Photo :</label>
+                    <input type="file" id="photo" accept="image/*" required>
+                </div>
+                <div class="form-group">
+                    <label for="logo">Logo (optionnel) :</label>
+                    <input type="file" id="logo" accept="image/*">
                 </div>
                 
-                <div class="preview-toggle-buttons" style="display: none;">
-                    <button id="toggle-verso" class="btn-toggle-view">Afficher le verso</button>
-                </div>
+                <hr style="margin: 30px 0;">
                 
-                <div class="download-buttons" style="display: none;">
-                    <button id="download-recto-png" class="download-btn png">Télécharger Recto (PNG)</button>
-                    <button id="download-recto-pdf" class="download-btn pdf">Télécharger Recto (PDF)</button>
-                    <button id="download-all-pdf" class="download-btn download-all">Télécharger Recto-Verso (PDF)</button>
-                    <button id="save-card" class="download-btn btn-save-card">Enregistrer</button>
+                <h2>Informations pour le Verso</h2>
+                <div class="form-group">
+                    <label for="versoSlogan">Slogan du verso :</label>
+                    <input type="text" id="versoSlogan" value="By Mégane" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="versoVersion">Numéro de version :</label>
+                    <input type="text" id="versoVersion" placeholder="Ex: V1.0">
+                </div>
+                <div class="form-group">
+                    <label for="versoWebsite">Site web :</label>
+                    <input type="text" id="versoWebsite" placeholder="Ex: www.megane.com">
+                </div>
+
+                <button type="submit" class="btn-submit">Créer la Carte</button>
+            </form>
+
+            <div id="card-previews-container">
+                <div id="recto-preview" class="card-preview" style="display: none;">
+                    <button class="preview-btn" id="preview-main-btn" style="display:none;">👁️</button>
+                    <div class="card-header">
+                        <h2 id="display-carte-nom">Mégane-Carde</h2>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-info">
+                            <p><strong>Nom :</strong> <span id="display-nom"></span></p>
+                            <p><strong>Prénom :</strong> <span id="display-prenom"></span></p>
+                            <p><strong>Né(e) le :</strong> <span id="display-dateNaissance"></span></p>
+                            <p><strong>à :</strong> <span id="display-lieuNaissance"></span></p>
+                            <p><strong>Ethnie :</strong> <span id="display-ethnie"></span></p>
+                            <p><strong>Nationalité :</strong> <span id="display-nationalite"></span></p>
+                            <p><strong>Résidence :</strong> <span id="display-lieuHabitation"></span></p>
+                            <p><strong>Tél. :</strong> <span id="display-numeroTelephone"></span></p>
+                            <p><strong>Email :</strong> <span id="display-email"></span></p>
+                        </div>
+                        <div class="card-photo-container">
+                            <img id="carte-photo" src="" alt="Photo d'identité">
+                            <p id="carte-fonction"></p>
+                        </div>
+                    </div>
+                    <div class="qr-and-logo-container">
+                        <div class="qr-section">
+                            <div id="qr-code"></div>
+                            <span class="qr-description">Scannez ce QR Code</span>
+                        </div>
+                        <div class="logo-section">
+                            <span id="slogan-text" class="slogan-text"></span>
+                            <img id="logo-img" src="" alt="Logo">
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <span>MA CARTE COMMUNAUTAIRE</span>
+                    </div>
+                </div>
+
+                <div id="verso-preview" class="card-preview" style="display: none;">
+                    <h3>By Mégane</h3>
+                    <p id="verso-version-display"></p>
+                    <p id="verso-website-display"></p>
                 </div>
             </div>
             
-            <div id="gallery" style="display: none;">
-                <h2>Cartes Enregistrées</h2>
-                <div id="gallery-container">
-                    </div>
+            <div class="preview-toggle-buttons" style="display: none;">
+                <button id="toggle-verso" class="btn-toggle-view">Afficher le verso</button>
             </div>
+            
+            <div class="download-buttons" style="display: none;">
+                <button id="download-recto-png" class="download-btn png">Télécharger Recto (PNG)</button>
+                <button id="download-recto-pdf" class="download-btn pdf">Télécharger Recto (PDF)</button>
+                <button id="download-all-pdf" class="download-btn download-all">Télécharger Recto-Verso (PDF)</button>
+                <button id="save-card" class="download-btn btn-save-card">Enregistrer</button>
+            </div>
+        </div>
+        
+        <div id="gallery" style="display: none;">
+            <h2>Cartes Enregistrées</h2>
+            <div id="gallery-container">
+                </div>
         </div>
     </div>
 
@@ -545,96 +953,8 @@
     </div>
 
     <script>
-        // --- LOGIQUE D'AUTHENTIFICATION ET DE GESTION DE L'APP ---
-        const authSection = document.getElementById('auth-section');
-        const cardApp = document.getElementById('card-app');
-        const loginForm = document.getElementById('form-login');
-        const signupForm = document.getElementById('form-signup');
-        const showSignupBtn = document.getElementById('show-signup');
-        const showLoginBtn = document.getElementById('show-login');
-        const loginContainer = document.getElementById('login-form');
-        const signupContainer = document.getElementById('signup-form');
-        const errorMessage = document.getElementById('error-message');
-        const errorMessageSignup = document.getElementById('error-message-signup');
-
-        // Gérer le basculement entre les formulaires
-        showSignupBtn.addEventListener('click', () => {
-            loginContainer.style.display = 'none';
-            signupContainer.style.display = 'block';
-            errorMessage.textContent = '';
-        });
-
-        showLoginBtn.addEventListener('click', () => {
-            signupContainer.style.display = 'none';
-            loginContainer.style.display = 'block';
-            errorMessageSignup.textContent = '';
-        });
-
-        // Gérer l'inscription
-        signupForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const username = document.getElementById('signup-username').value;
-            const password = document.getElementById('signup-password').value;
-            const confirmPassword = document.getElementById('signup-confirm-password').value;
-
-            if (password !== confirmPassword) {
-                errorMessageSignup.textContent = 'Les mots de passe ne correspondent pas.';
-                return;
-            }
-
-            let users = JSON.parse(localStorage.getItem('users')) || {};
-
-            if (users[username]) {
-                errorMessageSignup.textContent = 'Ce nom d\'utilisateur existe déjà.';
-                return;
-            }
-
-            users[username] = password;
-            localStorage.setItem('users', JSON.stringify(users));
-            errorMessageSignup.textContent = '';
-            alert('Inscription réussie ! Vous pouvez maintenant vous connecter.');
-            signupContainer.style.display = 'none';
-            loginContainer.style.display = 'block';
-        });
-
-        // Gérer la connexion
-        loginForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const username = document.getElementById('login-username').value;
-            const password = document.getElementById('login-password').value;
-
-            let users = JSON.parse(localStorage.getItem('users')) || {};
-
-            if (users[username] && users[username] === password) {
-                localStorage.setItem('currentUser', username);
-                checkUserSession();
-            } else {
-                errorMessage.textContent = 'Nom d\'utilisateur ou mot de passe incorrect.';
-            }
-        });
-
-        function checkUserSession() {
-            const currentUser = localStorage.getItem('currentUser');
-            if (currentUser) {
-                authSection.style.display = 'none';
-                cardApp.style.display = 'block';
-            } else {
-                authSection.style.display = 'block';
-                cardApp.style.display = 'none';
-            }
-        }
-        
-        // Gérer la déconnexion
-        document.getElementById('logout-btn').addEventListener('click', () => {
-            localStorage.removeItem('currentUser');
-            alert("Vous avez été déconnecté.");
-            location.reload(); // Recharger la page pour revenir à l'écran de connexion
-        });
-
-        // Appeler au chargement de la page pour vérifier si l'utilisateur est déjà connecté
-        checkUserSession();
-
-        // --- LOGIQUE DE CRÉATION DE CARTE ET DE GALERIE ---
+        // JavaScript
+        const cardData = JSON.parse(localStorage.getItem('savedCards')) || [];
         const formContent = document.getElementById('main-content');
         const galleryContent = document.getElementById('gallery');
         const downloadButtons = document.querySelector('.download-buttons');
@@ -651,6 +971,7 @@
         let currentCardIndex = 0;
         let isRectoView = true;
 
+        // Initialisation du thème
         function initTheme() {
             const savedTheme = localStorage.getItem('theme') || 'light';
             if (savedTheme === 'dark') {
@@ -659,28 +980,64 @@
         }
         initTheme();
 
+        // Fonction de validation du formulaire
         function validateForm(formData) {
             const nomRegex = /^[a-zA-ZÀ-ÿ\s'-]{2,50}$/;
             const prenomRegex = /^[a-zA-ZÀ-ÿ\s'-]{2,50}$/;
             if (!nomRegex.test(formData.nom) || !prenomRegex.test(formData.prenom)) {
-                alert("Le nom et le prénom doivent contenir entre 2 et 50 lettres."); return false;
+                alert("Le nom et le prénom doivent contenir entre 2 et 50 lettres (accents et espaces autorisés).");
+                return false;
             }
+
             const dateNaissance = new Date(formData.dateNaissance);
             const today = new Date();
             if (isNaN(dateNaissance.getTime()) || dateNaissance >= today) {
-                alert("La date de naissance doit être une date valide dans le passé."); return false;
+                alert("La date de naissance doit être une date valide dans le passé.");
+                return false;
             }
+
             const emailRegex = /^\S+@\S+\.\S+$/;
             if (!emailRegex.test(formData.email)) {
-                alert("Veuillez saisir une adresse email valide."); return false;
+                alert("Veuillez saisir une adresse email valide.");
+                return false;
             }
             const telRegex = /^\+?[0-9\s-]{6,15}$/;
             if (!telRegex.test(formData.numeroTelephone)) {
-                alert("Veuillez saisir un numéro de téléphone valide."); return false;
+                alert("Veuillez saisir un numéro de téléphone valide (entre 6 et 15 chiffres, tirets, espaces ou '+' autorisés).");
+                return false;
             }
-            if (!formData.photoFile) {
-                alert("Veuillez télécharger une photo."); return false;
+
+            const file = formData.photoFile;
+            if (file) {
+                const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+                if (!allowedTypes.includes(file.type)) {
+                    alert("Seuls les formats JPEG, PNG et JPG sont acceptés pour la photo.");
+                    return false;
+                }
+                const maxFileSize = 2 * 1024 * 1024;
+                if (file.size > maxFileSize) {
+                    alert("La taille du fichier photo ne doit pas dépasser 2 Mo.");
+                    return false;
+                }
+            } else {
+                alert("Veuillez télécharger une photo.");
+                return false;
             }
+            
+            const logoFile = formData.logoFile;
+            if (logoFile) {
+                const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+                if (!allowedTypes.includes(logoFile.type)) {
+                    alert("Seuls les formats JPEG, PNG et JPG sont acceptés pour le logo.");
+                    return false;
+                }
+                const maxFileSize = 2 * 1024 * 1024;
+                if (logoFile.size > maxFileSize) {
+                    alert("La taille du fichier logo ne doit pas dépasser 2 Mo.");
+                    return false;
+                }
+            }
+
             return true;
         }
 
@@ -724,10 +1081,8 @@
         function renderGallery() {
             const galleryContainer = document.getElementById('gallery-container');
             galleryContainer.innerHTML = '';
-            const currentUser = localStorage.getItem('currentUser');
-            const userCards = JSON.parse(localStorage.getItem(`cards_${currentUser}`)) || [];
 
-            userCards.forEach((card, index) => {
+            cardData.forEach((card, index) => {
                 const newCard = document.createElement('div');
                 newCard.className = 'saved-card';
                 newCard.innerHTML = `
@@ -736,13 +1091,14 @@
                     <p><strong>Prénom :</strong> ${card.prenom}</p>
                     <button class="preview-btn gallery-preview-btn">👁️</button>
                 `;
-                newCard.querySelector('.gallery-preview-btn').addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    showPreview(index);
-                });
                 newCard.addEventListener('click', (e) => {
-                    updateFormWithCardData(card);
-                    showForm();
+                    if (!e.target.classList.contains('gallery-preview-btn')) {
+                        updateFormWithCardData(card);
+                        showForm();
+                    }
+                });
+                newCard.querySelector('.gallery-preview-btn').addEventListener('click', () => {
+                    showPreview(index);
                 });
                 galleryContainer.appendChild(newCard);
             });
@@ -765,6 +1121,25 @@
             versoPreview.style.display = 'none';
             downloadButtons.style.display = 'none';
             previewToggleButtons.style.display = 'none';
+            document.getElementById('preview-main-btn').style.display = 'none';
+            document.getElementById('carte-photo').src = ""; 
+            document.getElementById('logo-img').src = ""; 
+            document.getElementById('qr-code').innerHTML = "";
+
+            document.getElementById('display-carte-nom').textContent = "Mégane-Carde";
+            document.getElementById('display-nom').textContent = "";
+            document.getElementById('display-prenom').textContent = "";
+            document.getElementById('display-dateNaissance').textContent = "";
+            document.getElementById('display-lieuNaissance').textContent = "";
+            document.getElementById('display-ethnie').textContent = "";
+            document.getElementById('display-nationalite').textContent = "";
+            document.getElementById('display-lieuHabitation').textContent = "";
+            document.getElementById('display-numeroTelephone').textContent = "";
+            document.getElementById('display-email').textContent = "";
+            document.getElementById('carte-fonction').textContent = "";
+            document.getElementById('slogan-text').textContent = "";
+            document.getElementById('verso-version-display').textContent = "";
+            document.getElementById('verso-website-display').textContent = "";
         }
 
         function updateCardViews() {
@@ -772,6 +1147,7 @@
             versoPreview.style.display = 'none';
             downloadButtons.style.display = 'flex';
             previewToggleButtons.style.display = 'flex';
+            document.getElementById('preview-main-btn').style.display = 'block';
             isRectoView = true;
             toggleVersoBtn.textContent = 'Afficher le verso';
         }
@@ -791,6 +1167,7 @@
 
         function updateModalContent(card) {
             modalContentContainer.innerHTML = '';
+            
             const rectoHtml = `
                 <div class="card-preview" id="modal-recto">
                     <div class="card-header"><h2 class="display-carte-nom">${card.carteNom || 'Mégane-Carde'}</h2></div>
@@ -833,27 +1210,69 @@
             `;
 
             modalContentContainer.innerHTML = rectoHtml + versoHtml;
-        }
+            
+            const qrImage = modalContentContainer.querySelector('#modal-qr');
+            const logoImage = modalContentContainer.querySelector('.logo-img');
 
-        function showPreview(index) {
-            const currentUser = localStorage.getItem('currentUser');
-            const userCards = JSON.parse(localStorage.getItem(`cards_${currentUser}`)) || [];
-            if (index >= 0 && index < userCards.length) {
-                currentCardIndex = index;
-                updateModalContent(userCards[currentCardIndex]);
-                updateNavButtons();
-                previewModal.style.display = 'flex';
+            if (document.body.classList.contains('dark-theme')) {
+                qrImage.style.filter = 'invert(1) hue-rotate(180deg)';
+                if (logoImage) logoImage.style.filter = 'invert(1) hue-rotate(180deg)';
+            } else {
+                qrImage.style.filter = 'none';
+                if (logoImage) logoImage.style.filter = 'none';
+            }
+            
+            const verso = modalContentContainer.querySelector('#modal-verso');
+            verso.style.cssText += `
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                background: linear-gradient(135deg, #b3e5fc, #81d4fa, #4fc3f7);
+                filter: blur(0.5px);
+            `;
+            const versoH3 = verso.querySelector('h3');
+            versoH3.style.cssText = `
+                font-size: 1.8em;
+                font-weight: bold;
+                color: #0d47a1;
+                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            `;
+            
+            const versoP = verso.querySelectorAll('p');
+            versoP.forEach(p => {
+                p.style.cssText = `
+                    font-size: 0.7em;
+                    color: #333;
+                    margin: 5px 0 0 0;
+                    text-align: center;
+                `;
+            });
+
+            if (document.body.classList.contains('dark-theme')) {
+                verso.style.background = 'linear-gradient(135deg, #1e3c72, #2a5298, #0d47a1)';
+                versoH3.style.color = '#8ab4f8';
+                versoP.forEach(p => p.style.color = '#e0e0e0');
+            } else {
+                verso.style.background = 'linear-gradient(135deg, #b3e5fc, #81d4fa, #4fc3f7)';
+                versoH3.style.color = '#0d47a1';
+                versoP.forEach(p => p.style.color = '#333');
             }
         }
 
+        function showPreview(index) {
+            currentCardIndex = index;
+            updateModalContent(cardData[currentCardIndex]);
+            updateNavButtons();
+            previewModal.style.display = 'flex';
+        }
+
         function updateNavButtons() {
-            const currentUser = localStorage.getItem('currentUser');
-            const userCards = JSON.parse(localStorage.getItem(`cards_${currentUser}`)) || [];
-            if (userCards.length > 1) {
+            if (cardData.length > 1) {
                 prevBtn.style.display = 'block';
                 nextBtn.style.display = 'block';
                 prevBtn.disabled = currentCardIndex === 0;
-                nextBtn.disabled = currentCardIndex === userCards.length - 1;
+                nextBtn.disabled = currentCardIndex === cardData.length - 1;
             } else {
                 prevBtn.style.display = 'none';
                 nextBtn.style.display = 'none';
@@ -875,6 +1294,11 @@
         
         document.querySelector('.close-btn').addEventListener('click', () => {
             previewModal.style.display = 'none';
+        });
+        window.addEventListener('click', (event) => {
+            if (event.target === previewModal) {
+                previewModal.style.display = 'none';
+            }
         });
 
         document.getElementById('menu-toggle-btn').addEventListener('click', function() {
@@ -899,21 +1323,17 @@
         });
 
         prevBtn.addEventListener('click', () => {
-            const currentUser = localStorage.getItem('currentUser');
-            const userCards = JSON.parse(localStorage.getItem(`cards_${currentUser}`)) || [];
             if (currentCardIndex > 0) {
                 currentCardIndex--;
-                updateModalContent(userCards[currentCardIndex]);
+                updateModalContent(cardData[currentCardIndex]);
                 updateNavButtons();
             }
         });
 
         nextBtn.addEventListener('click', () => {
-            const currentUser = localStorage.getItem('currentUser');
-            const userCards = JSON.parse(localStorage.getItem(`cards_${currentUser}`)) || [];
-            if (currentCardIndex < userCards.length - 1) {
+            if (currentCardIndex < cardData.length - 1) {
                 currentCardIndex++;
-                updateModalContent(userCards[currentCardIndex]);
+                updateModalContent(cardData[currentCardIndex]);
                 updateNavButtons();
             }
         });
@@ -945,6 +1365,11 @@
             if (!validateForm(formData)) {
                 return;
             }
+
+            formData.nom = formData.nom.charAt(0).toUpperCase() + formData.nom.slice(1).toLowerCase();
+            formData.prenom = formData.prenom.charAt(0).toUpperCase() + formData.prenom.slice(1).toLowerCase();
+            formData.lieuNaissance = formData.lieuNaissance.charAt(0).toUpperCase() + formData.lieuNaissance.slice(1).toLowerCase();
+            formData.lieuHabitation = formData.lieuHabitation.charAt(0).toUpperCase() + formData.lieuHabitation.slice(1).toLowerCase();
             
             const readerPhoto = new FileReader();
             readerPhoto.onload = function(e) {
@@ -990,7 +1415,11 @@
                 element.style.display = 'flex';
                 await new Promise(r => setTimeout(r, 50)); 
             }
-            const canvas = await html2canvas(element, { scale: 4, useCORS: true, width: element.offsetWidth, height: element.offsetHeight });
+            
+            const canvas = await html2canvas(element, {
+                scale: 4, useCORS: true, width: element.offsetWidth, height: element.offsetHeight
+            });
+            
             if (!isVisible) {
                 element.style.display = 'none';
             }
@@ -1050,13 +1479,6 @@
         }
 
         document.getElementById('save-card').addEventListener('click', async function() {
-            const currentUser = localStorage.getItem('currentUser');
-            if (!currentUser) {
-                alert("Vous devez être connecté pour enregistrer une carte.");
-                return;
-            }
-            let userCards = JSON.parse(localStorage.getItem(`cards_${currentUser}`)) || [];
-            
             const data = {
                 carteNom: document.getElementById('carteNom').value.trim() || 'Mégane-Carde',
                 nom: document.getElementById('nom').value, 
@@ -1075,26 +1497,20 @@
                 photo: document.getElementById('carte-photo').src,
                 logo: document.getElementById('logo-img').src
             };
-            
-            if (!data.nom || !data.prenom || !data.dateNaissance) {
-                alert("Veuillez d'abord créer une carte en remplissant les champs requis.");
-                return;
-            }
-
             const uniqueId = `${data.nom}-${data.prenom}-${data.dateNaissance}`;
-            const existingIndex = userCards.findIndex(card => `${card.nom}-${card.prenom}-${card.dateNaissance}` === uniqueId);
+            const existingIndex = cardData.findIndex(card => `${card.nom}-${card.prenom}-${card.dateNaissance}` === uniqueId);
             
             if (existingIndex !== -1) {
                 if (confirm('Une carte avec ce nom, prénom et date de naissance existe déjà. Voulez-vous la mettre à jour ?')) {
-                    userCards[existingIndex] = data;
-                    localStorage.setItem(`cards_${currentUser}`, JSON.stringify(userCards));
+                    cardData[existingIndex] = data;
+                    localStorage.setItem('savedCards', JSON.stringify(cardData));
                     alert('Carte mise à jour avec succès !');
                 } else {
                     alert('Opération annulée.');
                 }
             } else {
-                userCards.push(data);
-                localStorage.setItem(`cards_${currentUser}`, JSON.stringify(userCards));
+                cardData.push(data);
+                localStorage.setItem('savedCards', JSON.stringify(cardData));
                 alert('Carte enregistrée avec succès !');
             }
         });
@@ -1102,6 +1518,30 @@
         document.getElementById('download-recto-png').addEventListener('click', () => downloadSingleCard('recto-preview', 'png'));
         document.getElementById('download-recto-pdf').addEventListener('click', () => downloadSingleCard('recto-preview', 'pdf'));
         document.getElementById('download-all-pdf').addEventListener('click', downloadBothSides);
+        document.getElementById('preview-main-btn').addEventListener('click', () => {
+            const tempCard = {
+                carteNom: document.getElementById('carteNom').value.trim() || 'Mégane-Carde',
+                nom: document.getElementById('nom').value, 
+                prenom: document.getElementById('prenom').value, 
+                dateNaissance: document.getElementById('dateNaissance').value, 
+                lieuNaissance: document.getElementById('lieuNaissance').value, 
+                ethnie: document.getElementById('ethnie').value, 
+                nationalite: document.getElementById('nationalite').value, 
+                lieuHabitation: document.getElementById('lieuHabitation').value, 
+                numeroTelephone: document.getElementById('numeroTelephone').value, 
+                email: document.getElementById('email').value, 
+                fonction: document.getElementById('fonction').value, 
+                slogan: document.getElementById('slogan').value,
+                versoVersion: document.getElementById('versoVersion').value,
+                versoWebsite: document.getElementById('versoWebsite').value,
+                photo: document.getElementById('carte-photo').src,
+                logo: document.getElementById('logo-img').src
+            };
+            updateModalContent(tempCard);
+            previewModal.style.display = 'flex';
+            prevBtn.style.display = 'none';
+            nextBtn.style.display = 'none';
+        });
 
     </script>
 </body>
